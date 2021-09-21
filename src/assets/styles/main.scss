@@ -1,0 +1,39 @@
+// colors decralation
+$primary-color: #038c4c;
+$secondary-color: #02733e;
+$accent-color: #01401c;
+$dark-green: #012611;
+$darker: #0d0d0d;
+
+// general styling
+#wrapper {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+// authentication pages styling
+#auth-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-right {
+  background-color: $primary-color;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.auth-right .title {
+  font-size: 20px;
+  color: white;
+  font-weight: 400;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+}
