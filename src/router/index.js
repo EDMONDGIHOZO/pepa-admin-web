@@ -15,7 +15,7 @@ const routes = [
   },
 
   {
-    path: 'dashboard',
+    path: '/dashbaord',
     name: 'DashboardWrapper',
     component: DashboardWrapper,
     children: [

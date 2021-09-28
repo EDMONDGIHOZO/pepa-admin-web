@@ -1,13 +1,11 @@
 <template>
-  <v-container>
-    <h2>dashboard container</h2>
-  </v-container>
+  <div class="contents">
+      <h2>here they are </h2>
+  </div>
 </template>
 
 <script>
-
 export default {
-    name: 'Home-dashboard'
+  name: 'Home-dashboard',
 }
 </script>
-
