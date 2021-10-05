@@ -17,7 +17,15 @@ $darker: #0d0d0d;
 
 // authentication pages styling
 #auth-container {
-  height: 100%;
+  padding: 20px;
+  border-radius: 20px;
+  margin: auto;
+  width: 40%;
+}
+
+.title-r {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .auth-right .title {
@@ -37,7 +45,52 @@ $darker: #0d0d0d;
   color: white;
 }
 
+.inventory-row {
+  margin-top: 20px;
+}
+
 .grad-card {
   background: linear-gradient(270.23deg, #00a843 0.19%, #1fd071 99.8%);
   border-radius: 20px;
+  color: white;
+}
+.value-text {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+}
+.detail-card {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f1f1f1;
+  
+}
+
+.detail-card .title-bar p {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--dark-green);
+  opacity: 0.5;
+}
+
+.detail-card .card-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: auto;
+}
+
+.detail-card .card-contents .icon-card {
+  padding: 10px;
+  background: #e7f0e6;
+  border-radius: 5px;
+}
+
+.detail-card .card-contents p {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  color: var(--primary);
 }

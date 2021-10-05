@@ -1,17 +1,20 @@
 <template>
-  <v-card rounded-xl class="mx-auto white--text grad-card" flat>
-    <v-card-title>
+  <v-card
+    rounded-xl
+    :class="gradient === True ? 'grad-card' : 'det-card'"
+    flat
+    :outlined="gradient"
+  >
+    <v-card-title class="text-center">
       <span>
         {{ title }}
       </span>
-      <v-spacer />
-      <v-icon color="white">{{ iconName }}</v-icon>
     </v-card-title>
     <v-card-text>
-      <span class="card-value-text">{{ value }}</span>
+      <span class="value-text">{{ value }}</span>
     </v-card-text>
     <v-card-actions>
-      <span>{{ total }} Total</span>
+      <span v-if="!gradient">{{ total }} Total</span>
       <v-spacer></v-spacer>
       <v-btn depressed rounded @click="navigateTo(pathTo)" icon>
         <v-icon color="white">
@@ -25,7 +28,7 @@
 <script>
 export default {
   name: 'simpleCard',
-  props: ['title', 'value', 'pathTo', 'total', 'iconName'],
+  props: ['title', 'value', 'pathTo', 'total', 'iconName', 'gradient'],
 
   methods: {
     navigateTo(pathName) {

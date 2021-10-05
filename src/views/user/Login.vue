@@ -1,31 +1,36 @@
 <template>
   <v-container id="auth-container">
     <v-row class="pa-5">
-        <v-col cols="12">
-            <p class="display-1">Staff Member Login</p>
-        </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-text-field
-          label="Username"
-          placeholder="enter your username"
-          type="text"
-          filled
-        />
-        <v-text-field
-          label="password"
-          placeholder="* * * * * "
-          type="password"
-          filled
-        />
-        <v-btn
-          depressed
-          color="primary"
-          block
-          rounded
-          @click="navigate('dashboard-home')"
-        >
-          login
-        </v-btn>
+      <v-col cols="12">
+        <p class="title-r">Staff Member Login</p>
+      </v-col>
+      <v-col cols="12">
+        <div class="auth-container">
+          <v-text-field
+            label="Username"
+            placeholder="enter your username"
+            type="text"
+            filled
+            dense
+          />
+          <v-text-field
+            label="password"
+            placeholder="* * * * * "
+            type="password"
+            filled
+            dense
+          />
+          <v-btn
+            depressed
+            color="primary"
+            block
+            rounded
+            @click="navigate('dashboard-home')"
+            large
+          >
+            login
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>

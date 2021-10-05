@@ -63,7 +63,7 @@ export default {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
-            { title: 'categories', icon: 'mdi-eye' },
+            { title: 'categories', icon: 'mdi-view-toc' },
             { title: 'all', icon: 'mdi-eye' },
             { title: 'create new', icon: 'mdi-plus' },
           ],

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/user/Login'
 import DashboardWrapper from '../views/dashboard/dashboard-wrapper'
-import Home from '../views/dashboard/home'
+import Home from '../views/dashboard/Home'
 import NotFound from '../views/404/not-found'
 
 Vue.use(VueRouter)
