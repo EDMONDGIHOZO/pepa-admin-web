@@ -23,6 +23,9 @@ const routes = [
         path: 'home',
         name: 'dashboard-home',
         component: Home,
+        meta: {
+          title: 'dashboard',
+        },
       },
     ],
   },

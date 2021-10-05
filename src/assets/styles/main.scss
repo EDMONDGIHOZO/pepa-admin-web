@@ -1,10 +1,13 @@
 // colors decralation
-$primary-color: #038c4c;
-$secondary-color: #02733e;
+$primary-color: #0bb653;
+$secondary-color: #0bb653;
 $accent-color: #01401c;
 $dark-green: #012611;
 $darker: #0d0d0d;
 
+* {
+  font-family: 'Poppins', sans-serif;
+}
 // general styling
 #wrapper {
   padding: 0;
@@ -17,11 +20,24 @@ $darker: #0d0d0d;
   height: 100%;
 }
 
-
 .auth-right .title {
   font-size: 20px;
   color: white;
   font-weight: 400;
   text-align: center;
-  font-family: 'Quicksand', sans-serif;
+}
+
+.row-title {
+  font-size: 24px;
+}
+
+.card-value-text {
+  font-size: 42px;
+  font-weight: bold;
+  color: white;
+}
+
+.grad-card {
+  background: linear-gradient(270.23deg, #00a843 0.19%, #1fd071 99.8%);
+  border-radius: 20px;
 }

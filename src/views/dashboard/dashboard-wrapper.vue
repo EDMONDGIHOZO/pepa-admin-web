@@ -43,13 +43,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Pepa Dasboard</v-toolbar-title>
     </v-app-bar>
-
-    <v-main>
+    <v-container fluid>
       <!-- contents view -->
       <keep-alive>
         <router-view />
       </keep-alive>
-    </v-main>
+    </v-container>
   </v-app>
 </template>
 
@@ -59,11 +58,12 @@ export default {
     return {
       drawer: null,
       menuitems: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard' },
+        { title: 'Dasboard', icon: 'mdi-view-dashboard' },
         {
-          title: 'ingredients',
+          title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
+            { title: 'categories', icon: 'mdi-eye' },
             { title: 'all', icon: 'mdi-eye' },
             { title: 'create new', icon: 'mdi-plus' },
           ],
@@ -72,6 +72,7 @@ export default {
           title: 'Recipes',
           icon: 'mdi-food',
           subs: [
+            { title: 'categories', icon: 'mdi-eye' },
             { title: 'all', icon: 'mdi-eye' },
             { title: 'create new', icon: 'mdi-plus' },
           ],
