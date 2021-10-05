@@ -1,46 +1,44 @@
 <template>
   <div class="contents">
     <!-- sales panel -->
-    <div class="sales-row">
-      <v-row fluid>
-        <v-col md="12">
-          <p class="row-title">Sales activities - week</p>
-        </v-col>
-        <!-- pending -->
-        <v-col cols="12" md="4">
-          <simple-card
-            title="pending"
-            value="5600"
-            pathTo="orders"
-            total="23120"
-            iconName="mdi-check"
-            :gradient="True"
-          />
-        </v-col>
-        <!-- to be delivered -->
-        <v-col cols="12" md="4">
-          <simple-card
-            title="to delivered"
-            value="53230"
-            pathTo="orders"
-            total="23120"
-            iconName="mdi-car"
-            :gradient="True"
-          />
-        </v-col>
-        <!-- pending orders  -->
-        <v-col cols="12" md="4">
-          <simple-card
-            title="completed"
-            value="5600"
-            pathTo="orders"
-            total="23120"
-            iconName="mdi-check"
-            :gradient="True"
-          />
-        </v-col>
-      </v-row>
-    </div>
+    <v-row fluid dense>
+      <v-col cols="12">
+        <p class="row-title">Sales Activities</p>
+      </v-col>
+      <!-- pending -->
+      <v-col cols="12" md="4">
+        <simple-card
+          title="pending"
+          value="5600"
+          pathTo="orders"
+          total="23120"
+          iconName="mdi-check"
+          :gradient="True"
+        />
+      </v-col>
+      <!-- to be delivered -->
+      <v-col cols="12" md="4">
+        <simple-card
+          title="to delivered"
+          value="53230"
+          pathTo="orders"
+          total="23120"
+          iconName="mdi-car"
+          :gradient="True"
+        />
+      </v-col>
+      <!-- pending orders  -->
+      <v-col cols="12" md="4">
+        <simple-card
+          title="completed"
+          value="5600"
+          pathTo="orders"
+          total="23120"
+          iconName="mdi-check"
+          :gradient="True"
+        />
+      </v-col>
+    </v-row>
     <!-- enventory panel -->
     <div class="inventory-row">
       <v-row fluid>

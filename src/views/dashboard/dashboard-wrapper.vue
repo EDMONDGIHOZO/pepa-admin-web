@@ -2,11 +2,12 @@
   <v-app id="pepa" dark>
     <v-navigation-drawer v-model="drawer" app>
       <v-card flat>
-        <v-img
-          height="250"
-          src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-        ></v-img>
-        <v-card-title>Admin Dashboard</v-card-title>
+        <v-card-content class="pa-3">
+          <div class="logo-container">
+            <v-img :src="logo" class="dashboard-menu-logo" />
+          </div>
+          <v-card-title>Admin Dashboard</v-card-title>
+        </v-card-content>
       </v-card>
       <v-list>
         <v-list-group
@@ -21,7 +22,7 @@
               <v-list-item-title v-text="menu.title"></v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item v-for="child in menu.subs" :key="child.title" link>
+          <v-list-item v-for="child in menu.subs" :key="child.title" link dense>
             <v-list-item-icon>
               <v-icon small>{{ child.icon }}</v-icon>
             </v-list-item-icon>
@@ -49,21 +50,24 @@
         <router-view />
       </keep-alive>
     </v-container>
+    <Footer />
   </v-app>
 </template>
 
 <script>
+import Footer from '@/components/navigation/Footer.vue'
 export default {
   data: function () {
     return {
       drawer: null,
+      logo: require('../../assets/images/pepaword.png'),
       menuitems: [
         { title: 'Dasboard', icon: 'mdi-view-dashboard' },
         {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
-            { title: 'categories', icon: 'mdi-view-toc' },
+            { title: 'categories', icon: 'mdi-view-headline' },
             { title: 'all', icon: 'mdi-eye' },
             { title: 'create new', icon: 'mdi-plus' },
           ],
@@ -80,6 +84,9 @@ export default {
         { title: 'orders', icon: 'mdi-wheel-barrow' },
       ],
     }
+  },
+  components: {
+    Footer,
   },
 }
 </script>
