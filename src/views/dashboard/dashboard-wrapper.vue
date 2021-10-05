@@ -10,6 +10,11 @@
         </v-card-content>
       </v-card>
       <v-list>
+        <v-list-item @click="navigate(child.path)">
+          <v-list-item-content>
+            <v-list-item-title>dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-group
           v-for="menu in menuitems"
           :key="menu.title"
@@ -22,7 +27,13 @@
               <v-list-item-title v-text="menu.title"></v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item v-for="child in menu.subs" :key="child.title" link dense>
+          <v-list-item
+            v-for="child in menu.subs"
+            :key="child.title"
+            link
+            dense
+            @click="navigate(child.path)"
+          >
             <v-list-item-icon>
               <v-icon small>{{ child.icon }}</v-icon>
             </v-list-item-icon>
@@ -55,6 +66,7 @@
 </template>
 
 <script>
+import router from '../../router'
 import Footer from '@/components/navigation/Footer.vue'
 export default {
   data: function () {
@@ -62,12 +74,15 @@ export default {
       drawer: null,
       logo: require('../../assets/images/pepaword.png'),
       menuitems: [
-        { title: 'Dasboard', icon: 'mdi-view-dashboard' },
         {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
-            { title: 'categories', icon: 'mdi-view-headline' },
+            {
+              title: 'categories',
+              icon: 'mdi-view-headline',
+              path: 'ing-categories',
+            },
             { title: 'all', icon: 'mdi-eye' },
             { title: 'create new', icon: 'mdi-plus' },
           ],
@@ -87,6 +102,12 @@ export default {
   },
   components: {
     Footer,
+  },
+
+  methods: {
+    navigate: function (name) {
+      router.push({ name: name })
+    },
   },
 }
 </script>
