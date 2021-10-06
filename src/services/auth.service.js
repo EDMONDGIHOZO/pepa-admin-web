@@ -1,14 +1,19 @@
 import axios from 'axios'
+import authHeader from './auth-header'
 
 const API_URL = 'http://localhost:3333/user/'
 
 class AuthService {
   // login
   async login(user) {
-    const response = await axios.post(API_URL + 'login', {
-      email: user.email,
-      password: user.password,
-    })
+    const response = await axios.post(
+      API_URL + 'login',
+      {
+        email: user.email,
+        password: user.password,
+      },
+      { headers: authHeader() },
+    )
     if (response.data.token) {
       localStorage.setItem('user', JSON.stringify(response.data))
     }
@@ -24,7 +29,7 @@ class AuthService {
   async register(user) {
     return axios.post(API_URL + 'register', {
       email: user.email,
-      password: '1234567',
+      password: user.password,
       password_confirmation: '1234567',
       phones: user.phones,
     })
