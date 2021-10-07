@@ -13,7 +13,7 @@
           pathTo="orders"
           total="23120"
           iconName="mdi-check"
-          :gradient="True"
+          :gradient="true"
         />
       </v-col>
       <!-- to be delivered -->
@@ -24,7 +24,7 @@
           pathTo="orders"
           total="23120"
           iconName="mdi-car"
-          :gradient="True"
+          :gradient="true"
         />
       </v-col>
       <!-- pending orders  -->
@@ -35,7 +35,7 @@
           pathTo="orders"
           total="23120"
           iconName="mdi-check"
-          :gradient="True"
+          :gradient="true"
         />
       </v-col>
     </v-row>
@@ -103,50 +103,49 @@
             <v-card-title>
               Featured Recipes
             </v-card-title>
-            <v-card-content>
-              <v-list dense>
-                <v-list-item link>
-                  <v-list-item-avatar>
-                    <v-img
-                      src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                    />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>Tomatoes</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item link>
-                  <v-list-item-avatar>
-                    <v-img
-                      src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                    />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>Tomatoes</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item link>
-                  <v-list-item-avatar>
-                    <v-img
-                      src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                    />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>Tomatoes</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item link>
-                  <v-list-item-avatar>
-                    <v-img
-                      src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                    />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>Tomatoes</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card-content>
+
+            <v-list dense>
+              <v-list-item link>
+                <v-list-item-avatar>
+                  <v-img
+                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
+                  />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>Tomatoes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-avatar>
+                  <v-img
+                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
+                  />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>Tomatoes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-avatar>
+                  <v-img
+                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
+                  />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>Tomatoes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-avatar>
+                  <v-img
+                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
+                  />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>Tomatoes</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-card>
         </v-col>
       </v-row>

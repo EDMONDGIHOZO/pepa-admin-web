@@ -11,13 +11,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    component: Login,
+    redirect: '/dashboard/home',
   },
-
   {
-    path: '/dashbaord',
-    name: 'DashboardWrapper',
+    path: '/dashboard',
+    name: 'dashboard-wrapper',
     component: DashboardWrapper,
     children: [
       {
@@ -37,6 +35,14 @@ const routes = [
         },
       },
     ],
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   },
 
   //   404 page
@@ -51,6 +57,20 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('userToken')) {
+      next({
+        name: 'login',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -32,6 +32,7 @@ $darker: #0d0d0d;
   padding: 20px;
   border-radius: 20px;
   margin: auto;
+
 }
 
 .title-r {
@@ -61,7 +62,7 @@ $darker: #0d0d0d;
 }
 
 .grad-card {
-  background: linear-gradient(270.23deg, #00a843 0.19%, #1fd071 99.8%);
+  background: linear-gradient(270.23deg, #62872D 0.19%, #466719 99.8%);
   border-radius: 20px;
   color: white;
 }
@@ -104,4 +105,10 @@ $darker: #0d0d0d;
   font-weight: 600;
   font-size: 32px;
   color: var(--primary);
+}
+
+
+.request-box {
+    padding: 20px;
+    text-align: center;
 }

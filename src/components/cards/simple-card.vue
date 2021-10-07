@@ -1,7 +1,7 @@
 <template>
   <v-card
     rounded-xl
-    :class="gradient === True ? 'grad-card' : 'det-card'"
+    :class="gradient === true ? 'grad-card' : 'det-card'"
     flat
     :outlined="gradient"
   >
