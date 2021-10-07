@@ -59,5 +59,8 @@ export const auth = {
       state.status.loggedIn = false
       state.user = null
     },
+    logout(state) {
+      state.user = null
+    },
   },
 }

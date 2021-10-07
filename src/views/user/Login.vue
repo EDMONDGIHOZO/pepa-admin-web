@@ -23,6 +23,7 @@
                 placeholder="example@pepa.com"
                 type="text"
                 v-model="user.email"
+                :rules="emailRules"
                 filled
                 dense
               />
@@ -31,6 +32,7 @@
                 placeholder="* * * * * "
                 type="password"
                 v-model="user.password"
+                 :rules="passwordRules"
                 filled
                 dense
               />
@@ -40,7 +42,6 @@
                 block
                 rounded
                 type="submit"
-                @click="loggin_user"
                 large
               >
                 login
@@ -48,7 +49,10 @@
             </div>
           </v-form>
           <div class="request-box">
-            <a href="mailto:admin@pepa.com?subject=Request for password change" class="text-center">
+            <a
+              href="mailto:admin@pepa.com?subject=Request for password change"
+              class="text-center"
+            >
               request for password reset
             </a>
           </div>
@@ -73,6 +77,14 @@ export default {
       message: '',
       showMessage: false,
       alert_color: 'red',
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      passwordRules: [
+        (v) => !!v || 'password is required',
+        (v) => (v && v.length <= 4) || 'Name must be less than 10 characters',
+      ],
     }
   },
   computed: {
@@ -100,7 +112,8 @@ export default {
             if (response.success === true) {
               this.alert_color = 'success'
               this.message = response.message
-              this.navigate('dashboard-home')
+              //   check user role before
+              this.checkUser()
             } else {
               this.loading = false
               this.message = response.message
@@ -117,6 +130,11 @@ export default {
         )
       }
     },
+
+    checkUser() {
+      console.log('checked')
+    },
+
     //   auth navigation functions
     navigate: function (name) {
       router.push({ name: name })

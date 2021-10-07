@@ -15,14 +15,17 @@ class AuthService {
       { headers: authHeader() },
     )
     if (response.data.accessToken) {
-      localStorage.setItem('userToken', JSON.stringify(response.data.accessToken))
+      localStorage.setItem(
+        'userToken',
+        JSON.stringify(response.data.accessToken),
+      )
     }
     return response.data
   }
 
   //   user logout
   logout() {
-    localStorage.removeItem('user')
+    localStorage.removeItem('userToken')
   }
 
   //   adding user
