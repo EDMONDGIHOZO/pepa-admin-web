@@ -1,11 +1,13 @@
 import Axios from 'axios'
 
-let URL = 'http://localhost:3333/user/'
+let URL = 'http://localhost:3333/api/v1'
 
-export default Axios.create({
+const instance = Axios.create({
   baseURL: URL,
   headers: {
     Accept: 'application/json',
     'Content-type': 'application/json',
   },
 })
+
+export default instance

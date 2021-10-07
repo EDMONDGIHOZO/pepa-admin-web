@@ -1,13 +1,20 @@
 <template>
   <v-container id="auth-container">
-    <v-card outlined shaped>
+    <v-card outlined shaped max-width="450">
+      <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        top
+        color="primary accent-4"
+      ></v-progress-linear>
       <v-row class="pa-5">
         <v-col
           cols="12"
           class="pa-2 d-flex justify-center align-center flex-column"
         >
           <v-img width="70" class="my-4" :src="logo"></v-img>
-          <p class="title-r">Staff Member Login</p>
+          <p class="title-r">Staff Dashboard - login </p>
         </v-col>
         <v-col cols="12" v-if="showMessage">
           <v-alert border="top" :color="alert_color" dark>
@@ -32,7 +39,7 @@
                 placeholder="* * * * * "
                 type="password"
                 v-model="user.password"
-                 :rules="passwordRules"
+                :rules="passwordRules"
                 filled
                 dense
               />
@@ -81,9 +88,7 @@ export default {
         (v) => !!v || 'E-mail is required',
         (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      passwordRules: [
-        (v) => !!v || 'password is required',
-      ],
+      passwordRules: [(v) => !!v || 'password is required'],
     }
   },
   computed: {
@@ -102,13 +107,13 @@ export default {
   methods: {
     //   handle authentication
     loggin_user() {
-      this.showMessage = !this.showMessage
       this.loading = true
       //   skip the validation
       if (this.user.email !== '' && this.user.password !== '') {
         this.$store.dispatch('auth/login', this.user).then(
           (response) => {
             if (response.success === true) {
+              this.showMessage = !this.showMessage
               this.alert_color = 'success'
               this.message = response.message
               //   check user role before
