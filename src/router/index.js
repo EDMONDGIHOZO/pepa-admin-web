@@ -4,6 +4,8 @@ import Login from '../views/user/Login'
 import DashboardWrapper from '../views/dashboard/dashboard-wrapper'
 import Home from '../views/dashboard/Home'
 import IngCategoriesView from '../views/dashboard/ing-categories-view'
+import IngView from '../views/dashboard/ing-view'
+import Recipes from '../views/dashboard/recipes'
 import NotFound from '../views/404/not-found'
 
 Vue.use(VueRouter)
@@ -34,6 +36,22 @@ const routes = [
           title: 'dashboard',
         },
       },
+      {
+        path: 'all-ingrdients',
+        name: 'all-ingrdients',
+        component: IngView,
+        meta: {
+          title: 'dashboard',
+        },
+      },
+      {
+        path: 'recipes',
+        name: 'recipes',
+        component: Recipes,
+        meta: {
+          title: 'recipes',
+        },
+      },
     ],
     meta: {
       requiresAuth: true,
@@ -43,6 +61,9 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+    meta: {
+      title: 'Login',
+    },
   },
 
   //   404 page
@@ -55,13 +76,15 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: process.env.VUE_APP_BASE_URL,
   routes,
 })
 
 router.beforeEach((to, from, next) => {
+  document.title = `${process.env.VUE_APP_TITLE} - ${to.meta.title}`
+  let currentToken = localStorage.getItem('userToken')
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!localStorage.getItem('userToken')) {
+    if (!currentToken) {
       next({
         name: 'login',
       })

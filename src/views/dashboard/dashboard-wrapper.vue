@@ -51,13 +51,13 @@
     </v-navigation-drawer>
     <v-app-bar app flat color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Pepa Dasboard</v-toolbar-title>
+      <v-toolbar-title>Pepa Dasboard {{ User }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom min-width="200px" rounded offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon x-large v-on="on">
             <v-avatar color="white" size="36">
-              <span class=" green--text">GD</span>
+              <span class="green--text">GD</span>
             </v-avatar>
           </v-btn>
         </template>
@@ -94,6 +94,7 @@
 <script>
 import router from '../../router'
 import Footer from '@/components/navigation/Footer.vue'
+import { mapGetters } from 'vuex'
 export default {
   data: function () {
     return {
@@ -104,22 +105,20 @@ export default {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
+            { title: 'ingredients', icon: 'mdi-food', path: 'all-ingrdients' },
             {
               title: 'categories',
               icon: 'mdi-view-headline',
               path: 'ing-categories',
             },
-            { title: 'all', icon: 'mdi-eye' },
-            { title: 'create new', icon: 'mdi-plus' },
           ],
         },
         {
           title: 'Recipes',
           icon: 'mdi-food',
           subs: [
+            { title: 'Recipes', icon: 'mdi-food', path: 'recipes' },
             { title: 'categories', icon: 'mdi-eye' },
-            { title: 'all', icon: 'mdi-eye' },
-            { title: 'create new', icon: 'mdi-plus' },
           ],
         },
         { title: 'orders', icon: 'mdi-wheel-barrow' },
@@ -128,6 +127,10 @@ export default {
   },
   components: {
     Footer,
+  },
+
+  computed: {
+    ...mapGetters({ User: 'StateUser' }),
   },
 
   methods: {

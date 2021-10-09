@@ -14,7 +14,7 @@
           class="pa-2 d-flex justify-center align-center flex-column"
         >
           <v-img width="70" class="my-4" :src="logo"></v-img>
-          <p class="title-r">Staff Dashboard - login </p>
+          <p class="title-r">Staff Dashboard - login</p>
         </v-col>
         <v-col cols="12" v-if="showMessage">
           <v-alert border="top" :color="alert_color" dark>
@@ -23,38 +23,46 @@
         </v-col>
 
         <v-col cols="12">
-          <v-form @submit.prevent="loggin_user">
-            <div class="auth-container">
-              <v-text-field
-                label="Email"
-                placeholder="example@pepa.com"
-                type="text"
-                v-model="user.email"
-                :rules="emailRules"
-                filled
-                dense
-              />
-              <v-text-field
-                label="password"
-                placeholder="* * * * * "
-                type="password"
-                v-model="user.password"
-                :rules="passwordRules"
-                filled
-                dense
-              />
-              <v-btn
-                depressed
-                color="primary"
-                block
-                rounded
-                type="submit"
-                large
-              >
-                login
-              </v-btn>
+          <ValidationObserver ref="obs">
+            <div class="auth-container" slot-scope="{ invalid, validated }">
+              <v-form lazy-validation @submit.prevent="handleLogin">
+                <ValidationProvider name="email" rules="required|email">
+                  <v-text-field
+                    slot-scope="{ errors, valid }"
+                    v-model="user.email"
+                    :error-messages="errors"
+                    :success="valid"
+                    placeholder="example@pepa.com"
+                    filled
+                    dense
+                  ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider name="password" rules="required|min:6">
+                  <v-text-field
+                    slot-scope="{ errors, valid }"
+                    v-model="user.password"
+                    :error-messages="errors"
+                    :success="valid"
+                    placeholder="your password"
+                    filled
+                    type="password"
+                    dense
+                  ></v-text-field>
+                </ValidationProvider>
+                <v-btn
+                  color="primary"
+                  @click="handleLogin"
+                  :disabled="invalid || !validated"
+                  depressed
+                  rounded
+                  block
+                >
+                  Login
+                </v-btn>
+              </v-form>
             </div>
-          </v-form>
+          </ValidationObserver>
+
           <div class="request-box">
             <a
               href="mailto:admin@pepa.com?subject=Request for password change"
@@ -71,8 +79,14 @@
 
 <script>
 import router from '../../router'
+import { mapActions } from 'vuex'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 export default {
   name: 'Login',
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
 
   data() {
     return {
@@ -80,6 +94,7 @@ export default {
         email: '',
         password: '',
       },
+      valid: true,
       loading: false,
       message: '',
       showMessage: false,
@@ -105,40 +120,30 @@ export default {
     }
   },
   methods: {
-    //   handle authentication
-    loggin_user() {
-      this.loading = true
-      //   skip the validation
-      if (this.user.email !== '' && this.user.password !== '') {
-        this.$store.dispatch('auth/login', this.user).then(
-          (response) => {
-            if (response.success === true) {
-              this.showMessage = !this.showMessage
-              this.alert_color = 'success'
-              this.message = response.message
-              //   check user role before
-              this.checkUser()
-            } else {
-              this.loading = false
-              this.message = response.message
-              this.showMessage = true
-            }
-          },
-          (error) => {
+    ...mapActions(['LogIn']),
+    // //   handle authentication
+    async handleLogin() {
+      const valid_form = await this.$refs.obs.validate()
+      if (valid_form) {
+        // check if the user is from pepa staff
+        if (!this.user.email.includes('pepa.com')) {
+          alert('you must be one of the staff')
+        } else {
+          this.loading = true
+          const User = new FormData()
+          User.append('email', this.user.email)
+          User.append('password', this.user.password)
+          try {
+            await this.LogIn(User)
+            this.navigate('dashboard-home')
+          } catch (error) {
+            this.message = error
             this.loading = false
-            this.message =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString()
-          },
-        )
+            this.showMessage = true
+          }
+        }
       }
     },
-
-    checkUser() {
-      console.log('checked')
-    },
-
     //   auth navigation functions
     navigate: function (name) {
       router.push({ name: name })

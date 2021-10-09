@@ -6,7 +6,7 @@
       <v-col cols="12" md="8">
         <v-card outlined class="pa-4">
           <div class="row-title">
-            <p>Ingredient Categories</p>
+            <p>All ingredients</p>
           </div>
           <div>
             <v-simple-table>
@@ -17,7 +17,10 @@
                       Name
                     </th>
                     <th class="text-left">
-                      ingredients
+                      category
+                    </th>
+                    <th class="text-left">
+                      unit price
                     </th>
                     <th class="text-left">
                       actions
@@ -25,9 +28,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in categories" :key="item.name">
+                  <tr v-for="item in ingredients" :key="item.name">
                     <td>{{ item.name }}</td>
-                    <td>{{ item.calories }}</td>
+                    <td>{{ item.category.name }}</td>
+                    <td>{{ item.unit_price }}</td>
                     <td>
                       <v-btn
                         color="accent"
@@ -67,26 +71,42 @@
           </div>
         </v-card>
       </v-col>
+      
       <v-col cols="12" md="4">
         <v-card outlined class="pa-4">
           <div class="row-title">
-            <p>new category</p>
+            <p>new ingredient</p>
           </div>
           <div>
             <template>
               <v-form ref="form" v-model="valid" lazy-validation>
                 <v-text-field
-                  v-model="new_category.name"
-                  :counter="10"
-                  :rules="nameRules"
+                  v-model="new_ingredient.name"
+                  :rules="isRequired"
                   label="Name"
                   required
                   outlined
                   dense
                 ></v-text-field>
+                <v-text-field
+                  v-model="new_ingredient.unit_price"
+                  :rules="isRequired"
+                  label="Unit Price"
+                  required
+                  outlined
+                  dense
+                ></v-text-field>
+
+                <v-select
+                  :items="units"
+                  filled
+                  label="Unit Type"
+                  v-model="new_ingredient.unit_type"
+                  :rules="isRequired"
+                ></v-select>
 
                 <v-textarea
-                  v-model="new_category.description"
+                  v-model="new_ingredient.description"
                   label="Description"
                   auto-grow
                   outlined
@@ -130,41 +150,48 @@
 
 <script>
 export default {
-  name: 'IngCategoriesView',
+  name: 'IngView',
   data() {
     return {
       search: '',
-      new_category: {
+      new_ingredient: {
         name: '',
         description: '',
-        thumbnail: '',
-        user_id: '',
+        unit_type: '',
+        unit_price: '',
+        category_id: '',
+        image_url: '',
       },
       imageName: '',
       imageFile: '',
       //   form validation
       valid: true,
       name: '',
-      nameRules: [
-        (v) => !!v || 'Name is required',
-        (v) => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      ],
-      email: '',
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
+      isRequired: [(v) => !!v || 'this field is required'],
       select: null,
-      items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
+      units: ['lg', 'l'],
       checkbox: false,
-      categories: [
+      ingredients: [
         {
           name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%',
+          unit_price: 159,
+          category: {
+            name: 'vegetable',
+          },
+        },
+        {
+          name: 'Frozeddn Yogurt',
+          unit_price: 159,
+          category: {
+            name: 'vegetable',
+          },
+        },
+        {
+          name: 'Froze23n Yogurt',
+          unit_price: 159,
+          category: {
+            name: 'vegetable',
+          },
         },
       ],
     }
