@@ -82,13 +82,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = `${process.env.VUE_APP_TITLE} - ${to.meta.title}`
-  let currentToken = localStorage.getItem('userToken')
+  let user = localStorage.getItem('user')
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!currentToken) {
+    if (!user) {
       next({
         name: 'login',
       })
     } else {
+
       next()
     }
   } else {

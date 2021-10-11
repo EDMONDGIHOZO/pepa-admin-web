@@ -108,7 +108,7 @@ export default {
   },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.loggedIn
+      return this.$store.state.auth.status.loggedIn
     },
     logo() {
       return this.$store.state.app.logo
@@ -116,11 +116,11 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.navigate('dashboard-home')
+      this.$router.push({ name: 'dashboard-home' })
     }
   },
   methods: {
-    ...mapActions(['LogIn']),
+    ...mapActions(['logIn']),
     // //   handle authentication
     async handleLogin() {
       const valid_form = await this.$refs.obs.validate()
@@ -130,11 +130,12 @@ export default {
           alert('you must be one of the staff')
         } else {
           this.loading = true
-          const User = new FormData()
-          User.append('email', this.user.email)
-          User.append('password', this.user.password)
+          const userData = {
+            email: this.user.email,
+            password: this.user.password,
+          }
           try {
-            await this.LogIn(User)
+            await this.$store.dispatch('auth/login', userData)
             this.navigate('dashboard-home')
           } catch (error) {
             this.message = error

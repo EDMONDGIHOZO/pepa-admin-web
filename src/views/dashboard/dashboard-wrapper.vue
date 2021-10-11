@@ -1,5 +1,5 @@
 <template>
-  <v-app id="pepa" dark>
+  <v-app id="pepa" dark v-if="loaded">
     <v-navigation-drawer v-model="drawer" app>
       <v-card flat>
         <div class="logo-container">
@@ -51,22 +51,22 @@
     </v-navigation-drawer>
     <v-app-bar app flat color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Pepa Dasboard {{ User }}</v-toolbar-title>
+      <v-toolbar-title>Pepa Dasboard</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom min-width="200px" rounded offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon x-large v-on="on">
             <v-avatar color="white" size="36">
-              <span class="green--text">GD</span>
+              <img :src="profileimage" alt="avatar" />
             </v-avatar>
           </v-btn>
         </template>
         <v-card>
           <v-list-item-content class="justify-center">
-            <div class="mx-auto px-3">
-              <h3>gael didier</h3>
+            <div class="mx-auto px-3" v-if="currentUser !== null">
+              <h3>{{ currentUser.email }}</h3>
               <p class="text-caption mt-1">
-                admin
+                {{ currentUser.role }}
               </p>
               <v-divider class="my-3"></v-divider>
               <v-btn depressed rounded text>
@@ -94,11 +94,14 @@
 <script>
 import router from '../../router'
 import Footer from '@/components/navigation/Footer.vue'
-import { mapGetters } from 'vuex'
+import AuthService from '../../services/auth-service'
 export default {
   data: function () {
     return {
       drawer: null,
+      currentUser: null,
+      profileimage: require('../../assets/images/avatar.jpg'),
+      loaded: false,
       logo: require('../../assets/images/pepaword.png'),
       menuitems: [
         {
@@ -129,18 +132,31 @@ export default {
     Footer,
   },
 
-  computed: {
-    ...mapGetters({ User: 'StateUser' }),
-  },
-
   methods: {
     logout() {
-      this.$store.dispatch('auth/logout')
+      localStorage.removeItem('userToken')
+      localStorage.removeItem('user')
       this.navigate('login')
     },
     navigate: function (name) {
       router.push({ name: name }, () => {})
     },
+  },
+  mounted() {
+    AuthService.getProfile().then(
+      (response) => {
+        if (response.statusText === 'OK') {
+          this.currentUser = response.data.user
+          this.loaded = true
+        }
+      },
+      (error) => {
+        this.currentUser =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString()
+      },
+    )
   },
 }
 </script>
