@@ -7,7 +7,7 @@
         color="primary"
         indeterminate
       ></v-progress-circular>
-      <p class="my-5">Please wait ..... </p >
+      <p class="my-5">Please wait .....</p>
     </div>
     <div v-else>
       <v-navigation-drawer v-model="drawer" app>
@@ -118,7 +118,7 @@ export default {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
-            { title: 'ingredients', icon: 'mdi-food', path: 'all-ingrdients' },
+            { title: 'ingredients', icon: 'mdi-food', path: 'all-ingredients' },
             {
               title: 'categories',
               icon: 'mdi-view-headline',
@@ -157,6 +157,7 @@ export default {
       (response) => {
         if (response.statusText === 'OK') {
           this.currentUser = response.data.user
+          this.$store.dispatch('app/getIngeredientCategories')
           this.loaded = true
         }
       },

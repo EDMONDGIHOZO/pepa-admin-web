@@ -9,7 +9,7 @@
             <p>All ingredients</p>
           </div>
           <div>
-            <v-simple-table>
+            <v-simple-table v-if="loaded">
               <template v-slot:default>
                 <thead>
                   <tr>
@@ -23,6 +23,9 @@
                       unit price
                     </th>
                     <th class="text-left">
+                      unit type
+                    </th>
+                    <th class="text-left">
                       actions
                     </th>
                   </tr>
@@ -32,6 +35,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.category.name }}</td>
                     <td>{{ item.unit_price }}</td>
+                    <td>{{ item.unit_type }}</td>
                     <td>
                       <v-btn
                         color="accent"
@@ -39,9 +43,9 @@
                         small
                         class="mr-2 white--text"
                         rounded
+                        icon
                       >
                         <v-icon small>mdi-pencil</v-icon>
-                        edit
                       </v-btn>
                       <v-btn
                         color="red"
@@ -49,9 +53,9 @@
                         small
                         class="mr-2 white--text"
                         rounded
+                        icon
                       >
                         <v-icon small>mdi-delete</v-icon>
-                        delete
                       </v-btn>
                       <v-btn
                         color="primary"
@@ -59,101 +63,37 @@
                         small
                         class="mr-2 white--text"
                         rounded
+                        icon
                       >
                         <v-icon small>mdi-eye</v-icon>
-                        view
                       </v-btn>
                     </td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
+            <p v-else>0 ingredients</p>
           </div>
         </v-card>
       </v-col>
-      
+
       <v-col cols="12" md="4">
-        <v-card outlined class="pa-4">
-          <div class="row-title">
-            <p>new ingredient</p>
-          </div>
-          <div>
-            <template>
-              <v-form ref="form" v-model="valid" lazy-validation>
-                <v-text-field
-                  v-model="new_ingredient.name"
-                  :rules="isRequired"
-                  label="Name"
-                  required
-                  outlined
-                  dense
-                ></v-text-field>
-                <v-text-field
-                  v-model="new_ingredient.unit_price"
-                  :rules="isRequired"
-                  label="Unit Price"
-                  required
-                  outlined
-                  dense
-                ></v-text-field>
-
-                <v-select
-                  :items="units"
-                  filled
-                  label="Unit Type"
-                  v-model="new_ingredient.unit_type"
-                  :rules="isRequired"
-                ></v-select>
-
-                <v-textarea
-                  v-model="new_ingredient.description"
-                  label="Description"
-                  auto-grow
-                  outlined
-                  required
-                ></v-textarea>
-                <v-file-input
-                  label="Image"
-                  outlined
-                  dense
-                  @change="onFilePicked"
-                ></v-file-input>
-
-                <v-btn
-                  :disabled="!valid"
-                  color="success"
-                  class="mr-4"
-                  @click="validate"
-                  depressed
-                  rounded
-                >
-                  Save
-                </v-btn>
-
-                <v-btn
-                  color="error"
-                  class="mr-4"
-                  @click="reset"
-                  rounded
-                  depressed
-                >
-                  clear
-                </v-btn>
-              </v-form>
-            </template>
-          </div>
-        </v-card>
+        <create-ingredient />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import UserService from '../../services/user-service'
+import CreateIngredient from '@/components/actions/create-ingredient.vue'
 export default {
   name: 'IngView',
   data() {
     return {
       search: '',
+      loaded: false,
+      categories: null,
       new_ingredient: {
         name: '',
         description: '',
@@ -164,6 +104,7 @@ export default {
       },
       imageName: '',
       imageFile: '',
+      allIngredients: null,
       //   form validation
       valid: true,
       name: '',
@@ -171,30 +112,37 @@ export default {
       select: null,
       units: ['lg', 'l'],
       checkbox: false,
-      ingredients: [
-        {
-          name: 'Frozen Yogurt',
-          unit_price: 159,
-          category: {
-            name: 'vegetable',
-          },
-        },
-        {
-          name: 'Frozeddn Yogurt',
-          unit_price: 159,
-          category: {
-            name: 'vegetable',
-          },
-        },
-        {
-          name: 'Froze23n Yogurt',
-          unit_price: 159,
-          category: {
-            name: 'vegetable',
-          },
-        },
-      ],
+      ingredients: null,
+      errors: [],
     }
+  },
+  components: {
+    'create-ingredient': CreateIngredient,
+  },
+  mounted() {
+    UserService.getIngredients().then(
+      (data) => {
+        this.ingredients = data
+      },
+      (error) => {
+        this.currentUser =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString()
+      },
+    )
+    UserService.getIngCategories().then(
+      (data) => {
+        this.categories = data
+        this.loaded = true
+      },
+      (error) => {
+        this.currentUser =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString()
+      },
+    )
   },
   methods: {
     validate() {
@@ -227,6 +175,9 @@ export default {
         this.imageFile = ''
         this.new_category.thumbnail = ''
       }
+    },
+    createIng() {
+      console.log(this.new_ingredient)
     },
   },
 }

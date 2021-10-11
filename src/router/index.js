@@ -47,8 +47,8 @@ const routes = [
         },
       },
       {
-        path: 'all-ingrdients',
-        name: 'all-ingrdients',
+        path: 'all-ingredients',
+        name: 'all-ingredients',
         component: IngView,
         meta: {
           title: 'dashboard',

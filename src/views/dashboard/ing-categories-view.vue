@@ -157,18 +157,15 @@ export default {
       select: null,
       items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
       checkbox: false,
-      categories: [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%',
-        },
-      ],
     }
   },
+
+  computed: {
+    categories() {
+      return this.$store.state.app.ingredients_categories
+    },
+  },
+
   methods: {
     validate() {
       this.$refs.form.validate()

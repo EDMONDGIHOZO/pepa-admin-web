@@ -99,11 +99,6 @@ export default {
       message: '',
       showMessage: false,
       alert_color: 'red',
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules: [(v) => !!v || 'password is required'],
     }
   },
   computed: {
