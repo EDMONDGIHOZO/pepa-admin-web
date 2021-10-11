@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/user/Login'
 import DashboardWrapper from '../views/dashboard/dashboard-wrapper'
+import Profile from '../views/user/Profile.vue'
 import Home from '../views/dashboard/Home'
 import IngCategoriesView from '../views/dashboard/ing-categories-view'
 import IngView from '../views/dashboard/ing-view'
@@ -28,6 +29,15 @@ const routes = [
           title: 'dashboard',
         },
       },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: Profile,
+        meta: {
+          title: 'my profile',
+        },
+      },
+
       {
         path: 'ing-categories',
         name: 'ing-categories',
@@ -89,7 +99,6 @@ router.beforeEach((to, from, next) => {
         name: 'login',
       })
     } else {
-
       next()
     }
   } else {
