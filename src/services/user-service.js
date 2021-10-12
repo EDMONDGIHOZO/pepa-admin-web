@@ -19,22 +19,36 @@ class UserService {
       return res.data.data
     }
   }
-  async createIngredient(info) {
+
+  async createIngCategories(categoryInfo) {
     const results = await axios.post(
-      API_URL + 'admin/ingredient/create',
+      `${API_URL}admin/ing-cat`,
       {
-        name: info.name,
-        description: info.description,
-        unit_type: info.unit_type,
-        unit_price: info.unit_price,
-        image_url: info.image_url,
-        category_id: info.category_id,
+        name: categoryInfo.name,
+        description: categoryInfo.description,
+        image_url:
+          'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
       },
-      {
-        headers: authHeader(),
-      },
+      { headers: authHeader() },
+      { errorHandle: false },
     )
+
     return results
+
+    // await axios
+    //   .post(
+    //     API_URL + 'admin/ing-cat',
+    //     {
+    //       name: categoryInfo.name,
+    //       description: categoryInfo.description,
+    //       image_url:
+    //         'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
+    //     },
+    //     { headers: authHeader() },
+    //   )
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
   }
 
   getUserBoard() {

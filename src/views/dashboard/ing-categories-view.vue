@@ -69,16 +69,32 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-card outlined class="pa-4">
+          <div v-if="showMessage">
+            <v-alert
+              dense
+              border="left"
+              type="warning"
+              v-for="error in errorMessages"
+              :key="error.field"
+            >
+              <strong>{{ error.field }}</strong>
+              is {{ error.rule }}
+            </v-alert>
+          </div>
           <div class="row-title">
             <p>new category</p>
           </div>
           <div>
             <template>
-              <v-form ref="form" v-model="valid" lazy-validation>
+              <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation
+                @submit.prevent="handleSaveCategory"
+              >
                 <v-text-field
-                  v-model="new_category.name"
-                  :counter="10"
-                  :rules="nameRules"
+                  v-model="category.name"
+                  :rules="isRequireRule"
                   label="Name"
                   required
                   outlined
@@ -86,24 +102,18 @@
                 ></v-text-field>
 
                 <v-textarea
-                  v-model="new_category.description"
+                  v-model="category.description"
                   label="Description"
+                  :rules="isRequireRule"
                   auto-grow
                   outlined
                   required
                 ></v-textarea>
-                <v-file-input
-                  label="Image"
-                  outlined
-                  dense
-                  @change="onFilePicked"
-                ></v-file-input>
-
                 <v-btn
                   :disabled="!valid"
                   color="success"
                   class="mr-4"
-                  @click="validate"
+                  @click="handleSaveCategory"
                   depressed
                   rounded
                 >
@@ -123,40 +133,44 @@
             </template>
           </div>
         </v-card>
+        <v-snackbar v-model="showSingleMessage" multi-line>
+          {{ message }}
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              :color="messageColor"
+              text
+              v-bind="attrs"
+              @click="showSingleMessage = false"
+            >
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import userService from '../../services/user-service'
 export default {
   name: 'IngCategoriesView',
   data() {
     return {
-      search: '',
-      new_category: {
+      valid: true,
+      showMessage: false,
+      showSingleMessage: false,
+      message: '',
+      errorMessages: [],
+      messageColor: 'accent',
+      saving: false,
+      category: {
         name: '',
         description: '',
-        thumbnail: '',
-        user_id: '',
+        image_url: '',
       },
-      imageName: '',
-      imageFile: '',
-      //   form validation
-      valid: true,
-      name: '',
-      nameRules: [
-        (v) => !!v || 'Name is required',
-        (v) => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      ],
-      email: '',
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      select: null,
-      items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-      checkbox: false,
+      //   validators
+      isRequireRule: [(v) => !!v || 'this field is required'],
     }
   },
 
@@ -173,30 +187,41 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
-    onFilePicked(e) {
-      // get the added files
-      const files = e.target.files
-      if (files[0] !== undefined) {
-        this.imageName = files[0].name
-        if (this.imageName.lastIndexOf('.') <= 0) {
-          return
-        }
-        // read the image
-        let fr = new FileReader()
-        fr.readAsDataURL(files[0])
-
-        // ATTACH URL TO THE CATEGORY
-        fr.addEventListener('load', () => {
-          this.new_category.thumbnail = fr.result
-          //console.log("imageUrl");
-          this.imageFile = files[0] // this is an image file that can be sent to server...
-          //this.getImages();
-        })
-      } else {
-        this.imageName = ''
-        this.imageFile = ''
-        this.new_category.thumbnail = ''
+    async handleSaveCategory() {
+      const formData = {
+        name: this.category.name,
+        description: this.category.description,
+        image_url: this.category.image_url,
       }
+
+      //   save the category
+      userService
+        .createIngCategories(formData)
+        .then((response) => {
+          if (response.status === 200) {
+            this.message = 'the category is saved'
+            this.showSingleMessage = true
+            setTimeout(
+              (this.$store.dispatch('app/getIngeredientCategories'),
+              this.reset()),
+              4.0 * 1000,
+            )
+          }
+        })
+        .catch((error) => {
+          // handle and customize this error here
+          if (error) {
+            if (error.response.status === 422) {
+              this.errorMessages = error.response.data.errors
+              this.saving = false
+              this.showMessage = true
+            }
+          } else {
+            this.message = 'an error occured, please check your internet'
+            this.saving = false
+            this.showSingleMessage = true
+          }
+        })
     },
   },
 }
