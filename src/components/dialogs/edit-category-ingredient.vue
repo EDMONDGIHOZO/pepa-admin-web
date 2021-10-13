@@ -20,6 +20,7 @@
               mdi-close
             </v-icon>
           </v-toolbar>
+          <v-progress-linear v-if="loading" indeterminate color="orange" />
           <div class="pa-4">
             <ingredient-category-form
               @on-submit="handleEditing"

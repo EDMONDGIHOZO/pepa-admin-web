@@ -6,6 +6,7 @@ import Profile from '../views/user/Profile.vue'
 import Home from '../views/dashboard/Home'
 import IngCategoriesView from '../views/dashboard/ing-categories-view'
 import IngView from '../views/dashboard/ing-view'
+import IngredientCategoryView from '../views/dashboard/single-ing-cat.vue'
 import Recipes from '../views/dashboard/recipes'
 import NotFound from '../views/404/not-found'
 
@@ -44,6 +45,15 @@ const routes = [
         component: IngCategoriesView,
         meta: {
           title: 'dashboard',
+        },
+      },
+      {
+        path: 'single-ing-cat/:catid',
+        name: 'single-ing-cat',
+        props: true,
+        component: IngredientCategoryView,
+        meta: {
+          title: 'category',
         },
       },
       {

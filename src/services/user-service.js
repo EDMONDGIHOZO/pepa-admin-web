@@ -56,6 +56,15 @@ class UserService {
 
     return results
   }
+  async viewEngCategory(catid) {
+    const results = await axios.get(
+      `${API_URL}api/v1/ing-cats/${catid}`,
+      { headers: authHeader() },
+      { errorHandle: false },
+    )
+
+    return results
+  }
 
   getUserBoard() {
     return axios.get(API_URL + 'user', { headers: authHeader() })

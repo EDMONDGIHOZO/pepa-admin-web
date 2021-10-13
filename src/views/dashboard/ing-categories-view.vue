@@ -33,6 +33,14 @@
                     >
                       <edit-ingredient-category :category="item" />
                       <delete-dialog :name="item.name" :id="item.id" />
+                      <v-btn
+                        color="primary"
+                        icon
+                        small
+                        @click="navigate(item.id)"
+                      >
+                        <v-icon small>mdi-eye</v-icon>
+                      </v-btn>
                     </td>
                   </tr>
                 </tbody>
@@ -124,6 +132,9 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+    },
+    navigate(id) {
+      this.$router.push({ name: 'single-ing-cat', params: { catid: id } })
     },
     async handleSaveCategory(IngredientCategoryForm) {
       const formData = {
