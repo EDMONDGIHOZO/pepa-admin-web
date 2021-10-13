@@ -49,7 +49,7 @@ export default {
 
       form: {
         name: this.category?.name || '',
-        description: this.user?.description || '',
+        description: this.category?.description || '',
       },
     }
   },

@@ -31,9 +31,8 @@
                     <td
                       class="d-flex flex-center justify-between flex-row align-center"
                     >
+                      <edit-ingredient-category :category="item" />
                       <delete-dialog :name="item.name" :id="item.id" />
-                      <delete-dialog />
-                      <delete-dialog />
                     </td>
                   </tr>
                 </tbody>
@@ -86,11 +85,13 @@
 import userService from '../../services/user-service'
 import IngredientCategoryForm from '../../components/actions/ingredient-category-form.vue'
 import deleteDialog from '../../components/dialogs/delete-dialog.vue'
+import editIngredientCategory from '../../components/dialogs/edit-category-ingredient.vue'
 export default {
   name: 'IngCategoriesView',
   components: {
     IngredientCategoryForm,
     deleteDialog,
+    editIngredientCategory,
   },
   data() {
     return {

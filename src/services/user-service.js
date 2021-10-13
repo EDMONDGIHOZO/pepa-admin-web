@@ -40,21 +40,21 @@ class UserService {
     )
 
     return results
+  }
+  async editEngCategory(categoryInfo) {
+    const results = await axios.put(
+      `${API_URL}admin/ing-cat/${categoryInfo.id}`,
+      {
+        name: categoryInfo.name,
+        description: categoryInfo.description,
+        image_url:
+          'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
+      },
+      { headers: authHeader() },
+      { errorHandle: false },
+    )
 
-    // await axios
-    //   .post(
-    //     API_URL + 'admin/ing-cat',
-    //     {
-    //       name: categoryInfo.name,
-    //       description: categoryInfo.description,
-    //       image_url:
-    //         'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
-    //     },
-    //     { headers: authHeader() },
-    //   )
-    //   .catch((error) => {
-    //     console.log(error)
-    //   })
+    return results
   }
 
   getUserBoard() {
