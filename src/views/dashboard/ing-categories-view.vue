@@ -27,38 +27,13 @@
                 <tbody>
                   <tr v-for="item in categories" :key="item.name">
                     <td>{{ item.name }}</td>
-                    <td>{{ item.calories }}</td>
-                    <td>
-                      <v-btn
-                        color="accent"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                      >
-                        <v-icon small>mdi-pencil</v-icon>
-                        edit
-                      </v-btn>
-                      <v-btn
-                        color="red"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                      >
-                        <v-icon small>mdi-delete</v-icon>
-                        delete
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                      >
-                        <v-icon small>mdi-eye</v-icon>
-                        view
-                      </v-btn>
+                    <td>{{ item.meta.total_ingredients }}</td>
+                    <td
+                      class="d-flex flex-center justify-between flex-row align-center"
+                    >
+                      <delete-dialog :name="item.name" :id="item.id" />
+                      <delete-dialog />
+                      <delete-dialog />
                     </td>
                   </tr>
                 </tbody>
@@ -69,6 +44,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-card outlined class="pa-4">
+          <v-progress-linear indeterminate v-if="saving"></v-progress-linear>
           <div v-if="showMessage">
             <v-alert
               dense
@@ -85,55 +61,10 @@
             <p>new category</p>
           </div>
           <div>
-            <template>
-              <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-                @submit.prevent="handleSaveCategory"
-              >
-                <v-text-field
-                  v-model="category.name"
-                  :rules="isRequireRule"
-                  label="Name"
-                  required
-                  outlined
-                  dense
-                ></v-text-field>
-
-                <v-textarea
-                  v-model="category.description"
-                  label="Description"
-                  :rules="isRequireRule"
-                  auto-grow
-                  outlined
-                  required
-                ></v-textarea>
-                <v-btn
-                  :disabled="!valid"
-                  color="success"
-                  class="mr-4"
-                  @click="handleSaveCategory"
-                  depressed
-                  rounded
-                >
-                  Save
-                </v-btn>
-
-                <v-btn
-                  color="error"
-                  class="mr-4"
-                  @click="reset"
-                  rounded
-                  depressed
-                >
-                  clear
-                </v-btn>
-              </v-form>
-            </template>
+            <ingredient-category-form @on-submit="handleSaveCategory" />
           </div>
         </v-card>
-        <v-snackbar v-model="showSingleMessage" multi-line>
+        <v-snackbar v-model="showSingleMessage" multi-line color="primary">
           {{ message }}
           <template v-slot:action="{ attrs }">
             <v-btn
@@ -153,8 +84,14 @@
 
 <script>
 import userService from '../../services/user-service'
+import IngredientCategoryForm from '../../components/actions/ingredient-category-form.vue'
+import deleteDialog from '../../components/dialogs/delete-dialog.vue'
 export default {
   name: 'IngCategoriesView',
+  components: {
+    IngredientCategoryForm,
+    deleteDialog,
+  },
   data() {
     return {
       valid: true,
@@ -187,30 +124,30 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
-    async handleSaveCategory() {
+    async handleSaveCategory(IngredientCategoryForm) {
       const formData = {
-        name: this.category.name,
-        description: this.category.description,
-        image_url: this.category.image_url,
+        name: IngredientCategoryForm.name,
+        description: IngredientCategoryForm.description,
+        image_url: IngredientCategoryForm.image_url,
       }
-
-      //   save the category
+      this.saving = true
+      //   //   save the category
       userService
         .createIngCategories(formData)
         .then((response) => {
           if (response.status === 200) {
+            this.saving = false
             this.message = 'the category is saved'
             this.showSingleMessage = true
-            setTimeout(
-              (this.$store.dispatch('app/getIngeredientCategories'),
-              this.reset()),
-              4.0 * 1000,
-            )
+            this.$store.dispatch('app/getIngeredientCategories')
+          } else {
+            return {}
           }
         })
         .catch((error) => {
           // handle and customize this error here
           if (error) {
+            this.saving = false
             if (error.response.status === 422) {
               this.errorMessages = error.response.data.errors
               this.saving = false
@@ -222,6 +159,11 @@ export default {
             this.showSingleMessage = true
           }
         })
+    },
+
+    // updating
+    async handleUpdateCategory(IngredientCategoryForm) {
+      console.log('updating', IngredientCategoryForm)
     },
   },
 }

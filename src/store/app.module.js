@@ -10,7 +10,7 @@ export const app = {
   actions: {
     getIngeredientCategories({ commit }) {
       userService.getIngCategories().then((response) => {
-        commit('setIngredientsCategories', response)
+        commit('setIngredientsCategories', response.data)
       })
     },
   },

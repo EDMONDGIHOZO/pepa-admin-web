@@ -19,6 +19,12 @@ class UserService {
       return res.data.data
     }
   }
+  async deleteIngCategories(catId) {
+    const res = await axios.delete(`${API_URL}admin/ing-cat/${catId}`, {
+      headers: authHeader(),
+    })
+    return res
+  }
 
   async createIngCategories(categoryInfo) {
     const results = await axios.post(
