@@ -135,6 +135,14 @@ export default {
           ],
         },
         { title: 'orders', icon: 'mdi-wheel-barrow' },
+        {
+          title: 'users',
+          icon: 'mdi-account-group',
+          subs: [
+            { title: 'staff', icon: 'mdi-account', path: 'staff' },
+            { title: 'all users', icon: 'mdi-account-group' },
+          ],
+        },
       ],
     }
   },

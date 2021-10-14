@@ -82,15 +82,11 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
-    handleSaving() {
-      console.log('thefuck')
-    },
 
     selectFile(image) {
       this.progress = 0
       this.imageon = true
       this.currentFile = image
-      setTimeout(this.upload, 2000)
     },
 
     upload() {

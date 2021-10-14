@@ -76,6 +76,18 @@ class UserService {
     return res
   }
 
+  async createIngredient(formdata) {
+    const res = await axios.post(
+      API_URL + 'admin/ingredient/create',
+      formdata,
+      {
+        headers: authHeader(),
+      },
+    )
+
+    return res
+  }
+
   getUserBoard() {
     return axios.get(API_URL + 'user', { headers: authHeader() })
   }

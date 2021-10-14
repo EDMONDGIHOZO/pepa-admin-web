@@ -1,83 +1,123 @@
 <template>
   <div>
-    <v-card outlined class="pa-4" color="grey lighten-5">
+    <v-card outlined class="pa-4" color="secondary">
+      <v-progress-linear color="white" height="10" v-if="saving" />
       <v-card-title>
-        <p>create new</p>
+        <p class="white--text">create new</p>
       </v-card-title>
       <v-card-text>
-        <ValidationObserver ref="ingobs">
-          <v-form lazy-validation @submit.prevent="saveIngredient">
-            <ValidationProvider name="name" rules="required">
-              <v-text-field
-                v-model="ingredient.name"
-                dense
-                outlined
-                placeholder="ex: peanuts"
-                label="name"
-              ></v-text-field>
-            </ValidationProvider>
-            <ValidationProvider name="description" rules="required">
-              <v-text-field
-                v-model="ingredient.description"
-                dense
-                outlined
-                placeholder="ex: delicious"
-                label="Description"
-              ></v-text-field>
-            </ValidationProvider>
-            <ValidationProvider name="unit_price" rules="required">
-              <v-text-field
-                v-model="ingredient.unit_price"
-                dense
-                outlined
-                placeholder="ex: 4500"
-                label="unit price"
-              ></v-text-field>
-            </ValidationProvider>
-            <ValidationProvider name="unit_type" rules="required">
-              <v-select
-                :items="units"
-                item-text="name"
-                item-value="id"
-                v-model="ingredient.unit_type"
-                label="unit type"
-                outlined
-                dense
-              />
-            </ValidationProvider>
-            <ValidationProvider name="category" rules="required">
-              <v-select
-                :items="categories"
-                item-text="name"
-                item-value="id"
-                v-model="ingredient.category_id"
-                label="category"
-                outlined
-                dense
-              />
-            </ValidationProvider>
-            <ValidationProvider name="image_url" rules="required">
+        <ValidationObserver>
+          <div class="form-container">
+            <v-form
+              lazy-validation
+              @submit.prevent="handleCreateIngredient"
+              ref="ingredientform"
+            >
+              <ValidationProvider name="name" rules="required">
+                <v-text-field
+                  v-model="ingredient.name"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  background-color="white"
+                  placeholder="ex: peanuts"
+                  label="name"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="description" rules="required">
+                <v-text-field
+                  v-model="ingredient.description"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  background-color="white"
+                  placeholder="ex: delicious"
+                  label="Description"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="unit_price" rules="required">
+                <v-text-field
+                  v-model="ingredient.unit_price"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  type="number"
+                  solo
+                  background-color="white"
+                  placeholder="ex: 4500"
+                  label="unit price"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="unit type" rules="required">
+                <v-select
+                  :items="units"
+                  item-text="name"
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  item-value="id"
+                  v-model="ingredient.unit_type"
+                  label="unit type"
+                  solo
+                  background-color="white"
+                  dense
+                />
+              </ValidationProvider>
+              <ValidationProvider name="category" rules="required">
+                <v-select
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :items="categories"
+                  :error-messages="errors"
+                  item-text="name"
+                  item-value="id"
+                  v-model="ingredient.category_id"
+                  label="category"
+                  solo
+                  background-color="white"
+                  dense
+                />
+              </ValidationProvider>
               <v-file-input
                 show-size
-                outlined
+                solo
+                background-color="white"
                 label="upload photo"
+                @change="selectFile"
                 dense
               ></v-file-input>
-            </ValidationProvider>
-          </v-form>
+              <v-btn
+                rounded
+                color="white"
+                class="primary--text"
+                min-width="120"
+                type="submit"
+                block
+                @click="handleCreateIngredient"
+              >
+                save
+              </v-btn>
+            </v-form>
+          </div>
         </ValidationObserver>
       </v-card-text>
-      <v-card-actions>
-        <v-btn rounded color="primary" min-width="120" depressed>save</v-btn>
-      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import upload from '../../mixins/image-upload'
+import selectFile from '../../mixins/image-upload'
+import UserService from '../../services/user-service'
 export default {
   name: 'CreateIngredient',
+  mixins: [upload, selectFile],
   components: {
     ValidationObserver,
     ValidationProvider,
@@ -90,26 +130,59 @@ export default {
   data: () => {
     return {
       loaded: false,
+      saving: false,
       ingredient: {
         name: '',
         description: '',
         image_url: '',
-        category_id: null,
-        unit_price: null,
-        unit_type: null,
+        category_id: 0,
+        unit_price: 0,
+        unit_type: '',
       },
 
       units: [
         {
           id: '434',
-          name: 'KG(Kilograms)',
+          name: 'KG',
         },
         {
           id: '43443',
-          name: 'L(Litres)',
+          name: 'L',
         },
       ],
     }
+  },
+  methods: {
+    async handleCreateIngredient() {
+      const valid_form = await this.$refs.ingredientform.validate()
+      if (valid_form) {
+        // upload image first
+        this.saving = true
+        const imagedata = await this.upload()
+
+        if (imagedata) {
+          this.ingredient.image_url = imagedata.data.url
+        }
+
+        const formData = {
+          name: this.ingredient.name,
+          description: this.ingredient.description,
+          unit_price: this.ingredient.unit_price,
+          unit_type: this.ingredient.unit_type,
+          category_id: this.ingredient.category_id,
+          image_url: this.ingredient.image_url,
+        }
+        UserService.createIngredient(formData).then((response) => {
+          console.log(response)
+        })
+        this.saving = false
+        this.reset()
+      }
+    },
+
+    reset() {
+      this.$refs.ingredientform.reset()
+    },
   },
 }
 </script>
