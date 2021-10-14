@@ -14,6 +14,9 @@
                 <thead>
                   <tr>
                     <th class="text-left">
+                      Photo
+                    </th>
+                    <th class="text-left">
                       Name
                     </th>
                     <th class="text-left">
@@ -32,40 +35,32 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in ingredients" :key="item.name">
+                    <td>
+                      <v-avatar size="30">
+                        <v-img :src="item.image_url" alt="thumb" />
+                      </v-avatar>
+                    </td>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.category.name }}</td>
+                    <td v-if="item.category">{{ item.category.name }}</td>
+                    <td v-else>
+                      <p class="red--text">category name is not found</p>
+                    </td>
                     <td>{{ item.unit_price }}</td>
                     <td>{{ item.unit_type }}</td>
-                    <td>
-                      <v-btn
-                        color="accent"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                        icon
-                      >
-                        <v-icon small>mdi-pencil</v-icon>
-                      </v-btn>
+                    <td
+                      class="d-flex flex-center justify-between flex-row align-center"
+                    >
+                      <edit-ingredient :ingredientDetails="item" />
                       <v-btn
                         color="red"
                         depressed
                         small
                         class="mr-2 white--text"
                         rounded
+                        @click="showDeleteDialog(item.id)"
                         icon
                       >
                         <v-icon small>mdi-delete</v-icon>
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                        icon
-                      >
-                        <v-icon small>mdi-eye</v-icon>
                       </v-btn>
                     </td>
                   </tr>
@@ -76,6 +71,23 @@
           </div>
         </v-card>
       </v-col>
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to delete this item?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="!showDeleteDialog">
+              Cancel
+            </v-btn>
+            <v-btn color="primary darken-1" text @click="deleteIngredient">
+              OK
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <v-col cols="12" md="4">
         <create-ingredient />
@@ -87,6 +99,7 @@
 <script>
 import UserService from '../../services/user-service'
 import CreateIngredient from '@/components/actions/create-ingredient.vue'
+import editIngredient from '@/components/dialogs/edit-ingredient.vue'
 export default {
   name: 'IngView',
   data() {
@@ -94,6 +107,8 @@ export default {
       search: '',
       loaded: false,
       categories: null,
+      dialogDelete: false,
+      selectedItem: 0,
       new_ingredient: {
         name: '',
         description: '',
@@ -112,25 +127,21 @@ export default {
       select: null,
       units: ['lg', 'l'],
       checkbox: false,
-      ingredients: null,
       errors: [],
     }
   },
   components: {
     'create-ingredient': CreateIngredient,
+    'edit-ingredient': editIngredient,
   },
+
+  computed: {
+    ingredients() {
+      return this.$store.state.app.ingredients
+    },
+  },
+
   mounted() {
-    UserService.getIngredients().then(
-      (data) => {
-        this.ingredients = data
-      },
-      (error) => {
-        this.currentUser =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString()
-      },
-    )
     UserService.getIngCategories().then(
       (data) => {
         this.categories = data
@@ -151,33 +162,25 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
-    onFilePicked(e) {
-      // get the added files
-      const files = e.target.files
-      if (files[0] !== undefined) {
-        this.imageName = files[0].name
-        if (this.imageName.lastIndexOf('.') <= 0) {
-          return
-        }
-        // read the image
-        let fr = new FileReader()
-        fr.readAsDataURL(files[0])
-
-        // ATTACH URL TO THE CATEGORY
-        fr.addEventListener('load', () => {
-          this.new_category.thumbnail = fr.result
-          //console.log("imageUrl");
-          this.imageFile = files[0] // this is an image file that can be sent to server...
-          //this.getImages();
-        })
-      } else {
-        this.imageName = ''
-        this.imageFile = ''
-        this.new_category.thumbnail = ''
-      }
-    },
     createIng() {
       console.log(this.new_ingredient)
+    },
+    showDeleteDialog(id) {
+      this.selectedItem = id
+      this.dialogDelete = true
+    },
+    handleIngredientEdit() {
+      console.log('editing the shit')
+    },
+    async deleteIngredient() {
+      await this.$store
+        .dispatch('app/deleteIngredient', this.selectedItem)
+        .then((response) => {
+          if (response) {
+            this.$store.dispatch('app/getingredients')
+            this.dialogDelete = false
+          }
+        })
     },
   },
 }

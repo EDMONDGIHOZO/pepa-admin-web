@@ -7,6 +7,13 @@ const API_URL =
     : '//pepa.yebalabs.com/'
 
 class UserService {
+  async getDashboardSummary() {
+    const results = axios.get(`${API_URL}admin/dashboard-summary`, {
+      headers: authHeader(),
+    })
+    return results
+  }
+
   async getIngredients() {
     const res = await axios.get(API_URL + 'api/v1/ingredients')
     if (res.data.success) {
@@ -85,6 +92,26 @@ class UserService {
       },
     )
 
+    return res
+  }
+
+  async editEng(formdata, id) {
+    const res = await axios.put(
+      `${API_URL}admin/ingredient/update/${id}`,
+      formdata,
+      {
+        headers: authHeader(),
+      },
+    )
+
+    return res
+  }
+  async deleteIngredient(item) {
+    let id = item.item_id
+
+    const res = await axios.delete(`${API_URL}admin/ingredient/remove/${id}`, {
+      headers: authHeader(),
+    })
     return res
   }
 

@@ -87,6 +87,7 @@ export default {
       this.progress = 0
       this.imageon = true
       this.currentFile = image
+      setTimeout(this.upload(), 2000)
     },
 
     upload() {

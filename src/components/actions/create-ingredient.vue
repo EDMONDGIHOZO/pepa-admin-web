@@ -1,7 +1,13 @@
 <template>
   <div>
+    <v-progress-linear
+      color="primary"
+      height="10"
+      v-if="saving"
+      indeterminate
+      class="my-4"
+    />
     <v-card outlined class="pa-4" color="secondary">
-      <v-progress-linear color="white" height="10" v-if="saving" />
       <v-card-title>
         <p class="white--text">create new</p>
       </v-card-title>
@@ -175,6 +181,7 @@ export default {
         UserService.createIngredient(formData).then((response) => {
           console.log(response)
         })
+        this.$store.dispatch('app/getingredients')
         this.saving = false
         this.reset()
       }

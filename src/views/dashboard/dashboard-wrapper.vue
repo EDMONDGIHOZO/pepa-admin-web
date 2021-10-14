@@ -165,7 +165,9 @@ export default {
       (response) => {
         if (response.statusText === 'OK') {
           this.currentUser = response.data.user
+          this.$store.dispatch('app/getDashboardSummary')
           this.$store.dispatch('app/getIngeredientCategories')
+          this.$store.dispatch('app/getingredients')
           this.loaded = true
         }
       },

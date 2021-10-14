@@ -48,12 +48,12 @@
             <v-col md="4" sm="12">
               <detail-card
                 title="ingredients"
-                value="34"
+                :value="dashInfo.total_ingredients"
                 pathTo="ingredients"
               />
             </v-col>
             <v-col md="4" sm="12">
-              <detail-card title="recipes" value="20" pathTo="recipes" />
+              <detail-card title="recipes" :value="dashInfo.total_recipes" pathTo="recipes" />
             </v-col>
             <v-col md="4" sm="12">
               <detail-card title="suppliers" value="30" pathTo="suppliers" />
@@ -162,6 +162,11 @@ export default {
   components: {
     simpleCard,
     detailCard,
+  },
+  computed: {
+    dashInfo() {
+      return this.$store.state.app.dashboardSummary
+    },
   },
   data() {
     return {
