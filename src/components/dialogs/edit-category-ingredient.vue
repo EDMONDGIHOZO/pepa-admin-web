@@ -56,6 +56,7 @@ export default {
       const formData = {
         name: IngredientCategoryForm.name,
         description: IngredientCategoryForm.description,
+        image_url: IngredientCategoryForm.image_url,
         id: this.category.id,
       }
       UserService.editEngCategory(formData)

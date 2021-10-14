@@ -14,6 +14,9 @@
                 <thead>
                   <tr>
                     <th class="text-left">
+                      thumbnail
+                    </th>
+                    <th class="text-left">
                       Name
                     </th>
                     <th class="text-left">
@@ -26,6 +29,11 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in categories" :key="item.name">
+                    <td>
+                      <v-avatar size="30">
+                        <v-img :src="item.image_url" alt="thumb" />
+                      </v-avatar>
+                    </td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.meta.total_ingredients }}</td>
                     <td
@@ -137,6 +145,7 @@ export default {
       this.$router.push({ name: 'single-ing-cat', params: { catid: id } })
     },
     async handleSaveCategory(IngredientCategoryForm) {
+      this.showMessage = false
       const formData = {
         name: IngredientCategoryForm.name,
         description: IngredientCategoryForm.description,

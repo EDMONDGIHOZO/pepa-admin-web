@@ -32,8 +32,7 @@ class UserService {
       {
         name: categoryInfo.name,
         description: categoryInfo.description,
-        image_url:
-          'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
+        image_url: categoryInfo.image_url,
       },
       { headers: authHeader() },
       { errorHandle: false },
@@ -47,8 +46,7 @@ class UserService {
       {
         name: categoryInfo.name,
         description: categoryInfo.description,
-        image_url:
-          'https://png.pngtree.com/element_our/png/20180930/food-icon-design-vector-png_120564.jpg',
+        image_url: categoryInfo.image_url,
       },
       { headers: authHeader() },
       { errorHandle: false },
@@ -62,8 +60,20 @@ class UserService {
       { headers: authHeader() },
       { errorHandle: false },
     )
-
     return results
+  }
+
+  async imageUploader(file, onUploadProgress) {
+    let formData = new FormData()
+    formData.append('file', file)
+    const res = await axios.post(API_URL + 'media-upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress,
+    })
+
+    return res
   }
 
   getUserBoard() {
