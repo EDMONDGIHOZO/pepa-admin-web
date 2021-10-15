@@ -113,6 +113,9 @@
         </ValidationObserver>
       </v-card-text>
     </v-card>
+    <v-alert type="error" v-if="showErrors">
+      <p v-for="e in errors" :key="e.field">{{ e.field }}{{ e.message }}</p>
+    </v-alert>
   </div>
 </template>
 
@@ -137,6 +140,8 @@ export default {
     return {
       loaded: false,
       saving: false,
+      errors: [],
+      showErrors: false,
       ingredient: {
         name: '',
         description: '',
@@ -160,6 +165,7 @@ export default {
   },
   methods: {
     async handleCreateIngredient() {
+      this.showErrors = false
       const valid_form = await this.$refs.ingredientform.validate()
       if (valid_form) {
         // upload image first
@@ -178,9 +184,14 @@ export default {
           category_id: this.ingredient.category_id,
           image_url: this.ingredient.image_url,
         }
-        UserService.createIngredient(formData).then((response) => {
-          console.log(response)
-        })
+        UserService.createIngredient(formData)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            this.errors = error.response.data.messages.errors
+            this.showErrors = true
+          })
         this.$store.dispatch('app/getingredients')
         this.saving = false
         this.reset()

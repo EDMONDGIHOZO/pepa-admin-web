@@ -13,23 +13,12 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">
-                      Photo
-                    </th>
-                    <th class="text-left">
-                      Name
-                    </th>
-                    <th class="text-left">
-                      category
-                    </th>
-                    <th class="text-left">
-                      unit price
-                    </th>
-                    <th class="text-left">
-                      unit type
-                    </th>
-                    <th class="text-left">
-                      actions
+                    <th
+                      v-for="menu in table_headers"
+                      :key="menu.id"
+                      class="text-left"
+                    >
+                      {{ menu.title }}
                     </th>
                   </tr>
                 </thead>
@@ -78,7 +67,7 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary darken-1" text @click="!showDeleteDialog">
+            <v-btn color="primary darken-1" text @click="dialogDelete = false">
               Cancel
             </v-btn>
             <v-btn color="primary darken-1" text @click="deleteIngredient">
@@ -109,6 +98,32 @@ export default {
       categories: null,
       dialogDelete: false,
       selectedItem: 0,
+      table_headers: [
+        {
+          id: '1',
+          title: 'Photo',
+        },
+        {
+          id: '2',
+          title: 'Name',
+        },
+        {
+          id: '3',
+          title: 'Category',
+        },
+        {
+          id: '4',
+          title: 'Unit price',
+        },
+        {
+          id: '5',
+          title: 'Unit Type',
+        },
+        {
+          id: '6',
+          title: 'Actions',
+        },
+      ],
       new_ingredient: {
         name: '',
         description: '',
@@ -172,6 +187,7 @@ export default {
     handleIngredientEdit() {
       console.log('editing the shit')
     },
+
     async deleteIngredient() {
       await this.$store
         .dispatch('app/deleteIngredient', this.selectedItem)
