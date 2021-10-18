@@ -21,6 +21,8 @@
             >
               <ValidationProvider name="name" rules="required">
                 <v-text-field
+                  persistent-hint
+                  hint="the name of is not changeable! once created it's over"
                   v-model="ingredient.name"
                   dense
                   slot-scope="{ errors, valid }"
