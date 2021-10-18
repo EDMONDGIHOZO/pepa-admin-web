@@ -54,7 +54,7 @@
       <v-col cols="12" md="6">
         <v-select
           :items="unit_types"
-          item-value="id"
+          item-value="name"
           item-text="name"
           v-model="form.unit_type"
           label="Unit type"
@@ -124,10 +124,10 @@ export default {
         name: this.ingredient?.name || '',
         description: this.ingredient?.description || '',
         image_url: this.ingredient?.image_url || '',
-        id: this.ingredient?.id || 0,
-        unit_price: this.ingredient?.unit_price || 0,
-        unit_type: this.ingredient?.unit_type || 0,
-        category_id: this.ingredient?.category_id || 0,
+        id: this.ingredient?.id || null,
+        unit_price: this.ingredient?.unit_price || null,
+        unit_type: this.ingredient?.unit_type || null,
+        category_id: this.ingredient?.category_id || null,
       },
     }
   },

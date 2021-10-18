@@ -16,14 +16,12 @@
           <div class="form-container">
             <v-form
               lazy-validation
-              @submit.prevent="handleCreateIngredient"
-              ref="ingredientform"
+              @submit.prevent="handleCreateRecipe"
+              ref="recipeform"
             >
               <ValidationProvider name="name" rules="required">
                 <v-text-field
-                  persistent-hint
-                  hint="the name of is not changeable! once created it's over"
-                  v-model="ingredient.name"
+                  v-model="recipe.name"
                   dense
                   slot-scope="{ errors, valid }"
                   :success="valid"
@@ -34,48 +32,6 @@
                   label="name"
                 ></v-text-field>
               </ValidationProvider>
-              <ValidationProvider name="description" rules="required">
-                <v-text-field
-                  v-model="ingredient.description"
-                  dense
-                  slot-scope="{ errors, valid }"
-                  :success="valid"
-                  :error-messages="errors"
-                  solo
-                  background-color="white"
-                  placeholder="ex: delicious"
-                  label="Description"
-                ></v-text-field>
-              </ValidationProvider>
-              <ValidationProvider name="unit_price" rules="required">
-                <v-text-field
-                  v-model="ingredient.unit_price"
-                  dense
-                  slot-scope="{ errors, valid }"
-                  :success="valid"
-                  :error-messages="errors"
-                  type="number"
-                  solo
-                  background-color="white"
-                  placeholder="ex: 4500"
-                  label="unit price"
-                ></v-text-field>
-              </ValidationProvider>
-              <ValidationProvider name="unit type" rules="required">
-                <v-select
-                  :items="units"
-                  item-text="name"
-                  slot-scope="{ errors, valid }"
-                  :success="valid"
-                  :error-messages="errors"
-                  item-value="id"
-                  v-model="ingredient.unit_type"
-                  label="unit type"
-                  solo
-                  background-color="white"
-                  dense
-                />
-              </ValidationProvider>
               <ValidationProvider name="category" rules="required">
                 <v-select
                   slot-scope="{ errors, valid }"
@@ -83,22 +39,48 @@
                   :items="categories"
                   :error-messages="errors"
                   item-text="name"
-                  item-value="name"
-                  v-model="ingredient.category_id"
+                  item-value="id"
+                  v-model="recipe.category_id"
                   label="category"
                   solo
                   background-color="white"
                   dense
                 />
               </ValidationProvider>
-              <v-file-input
-                show-size
-                solo
-                background-color="white"
-                label="upload photo"
-                @change="selectFile"
-                dense
-              ></v-file-input>
+              <v-list class="my-4" rounded elevation="2">
+                <v-subheader>
+                  Ingredients
+                </v-subheader>
+                <add-ing-to-recipe />
+                <v-list-item
+                  v-for="ing in temporaryIngredients"
+                  :key="ing.ingredient_id"
+                >
+                  <v-list-item-avatar>
+                    <v-img :src="ing.image_url" alt="icon" />
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title v-text="ing.name"></v-list-item-title>
+
+                    <v-list-item-subtitle
+                      v-text="ing.quantity + ' ' + ing.unit_type"
+                    ></v-list-item-subtitle>
+                  </v-list-item-content>
+
+                  <v-list-item-action>
+                    <v-btn icon>
+                      <v-icon
+                        small
+                        color="red"
+                        @click="removeIng(ing.ingredient_id)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
               <v-btn
                 rounded
                 color="white"
@@ -125,49 +107,45 @@ import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
 import UserService from '../../services/user-service'
+import AddIngToRecipe from './add-ing-to-recipe.vue'
 export default {
-  name: 'CreateIngredient',
+  name: 'CreateRecipe',
   mixins: [upload, selectFile],
   components: {
     ValidationObserver,
     ValidationProvider,
+    AddIngToRecipe,
   },
   computed: {
     categories() {
-      return this.$store.state.app.ingredients_categories
+      return this.$store.state.app.recipecats
+    },
+    temporaryIngredients() {
+      return this.$store.state.app.tempIngredients
     },
   },
   data: () => {
     return {
       loaded: false,
       saving: false,
+      creationDialog: false,
       errors: [],
       showErrors: false,
-      ingredient: {
+      recipe: {
         name: '',
         description: '',
-        image_url: '',
+        prep_time: null,
+        cook_time: null,
+        servings: null,
         category_id: null,
-        unit_price: null,
-        unit_type: null,
+        ingredients: [],
       },
-
-      units: [
-        {
-          id: '434',
-          name: 'KG',
-        },
-        {
-          id: '43443',
-          name: 'L',
-        },
-      ],
     }
   },
   methods: {
-    async handleCreateIngredient() {
+    async handleCreateRecipe() {
       this.showErrors = false
-      const valid_form = await this.$refs.ingredientform.validate()
+      const valid_form = await this.$refs.recipeform.validate()
       if (valid_form) {
         // upload image first
         this.saving = true
@@ -178,12 +156,12 @@ export default {
         }
 
         const formData = {
-          name: this.ingredient.name,
-          description: this.ingredient.description,
-          unit_price: this.ingredient.unit_price,
-          unit_type: this.ingredient.unit_type,
-          category_id: this.ingredient.category_id,
-          image_url: this.ingredient.image_url,
+          name: this.recipe.name,
+          description: this.recipe.description,
+          prep_time: this.recipe.prep_time,
+          cook_time: this.recipe.cook_time,
+          servings: this.recipe.servings,
+          category_id: this.recipe.category_id,
         }
         UserService.createIngredient(formData)
           .then((response) => {
@@ -201,6 +179,9 @@ export default {
 
     reset() {
       this.$refs.ingredientform.reset()
+    },
+    removeIng(id) {
+      this.$store.dispatch('app/removeTempIngredient', id)
     },
   },
 }

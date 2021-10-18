@@ -17,13 +17,16 @@
                       Name
                     </th>
                     <th class="text-left">
+                      description
+                    </th>
+                    <th class="text-left">
+                      time
+                    </th>
+                    <th class="text-left">
                       ingredients
                     </th>
                     <th class="text-left">
                       servings
-                    </th>
-                    <th class="text-left">
-                      price / serving
                     </th>
                     <th class="text-left">
                       actions
@@ -31,41 +34,34 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in recipes" :key="item.name">
+                  <tr v-for="item in recipes" :key="item.id">
                     <td>{{ item.name }}</td>
-                    <td>{{ item.ingredients.length }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.cook_time + item.prep_time }} minutes</td>
+                    <td v-if="item.ingredients">
+                      {{ item.ingredients.length }}
+                    </td>
+                    <td v-else>no ingredients yet</td>
                     <td>{{ item.servings }}</td>
-                    <td>{{ item.price_per_serving }}</td>
+
                     <td>
                       <v-btn
                         color="accent"
                         depressed
                         small
                         class="mr-2 white--text"
-                        rounded
+                        icon
                       >
-                        <v-icon small>mdi-pencil</v-icon>
-                        edit
+                        <v-icon small>mdi-eye</v-icon>
                       </v-btn>
                       <v-btn
                         color="red"
                         depressed
                         small
                         class="mr-2 white--text"
-                        rounded
+                        icon
                       >
                         <v-icon small>mdi-delete</v-icon>
-                        delete
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        depressed
-                        small
-                        class="mr-2 white--text"
-                        rounded
-                      >
-                        <v-icon small>mdi-eye</v-icon>
-                        view
                       </v-btn>
                     </td>
                   </tr>
@@ -76,82 +72,14 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card outlined class="pa-4">
-          <div class="row-title">
-            <p>new ingredient</p>
-          </div>
-          <div>
-            <template>
-              <v-form ref="form" v-model="valid" lazy-validation>
-                <v-text-field
-                  v-model="new_ingredient.name"
-                  :rules="isRequired"
-                  label="Name"
-                  required
-                  outlined
-                  dense
-                ></v-text-field>
-                <v-text-field
-                  v-model="new_ingredient.unit_price"
-                  :rules="isRequired"
-                  label="Unit Price"
-                  required
-                  outlined
-                  dense
-                ></v-text-field>
-
-                <v-select
-                  :items="units"
-                  filled
-                  label="Unit Type"
-                  v-model="new_ingredient.unit_type"
-                  :rules="isRequired"
-                ></v-select>
-
-                <v-textarea
-                  v-model="new_ingredient.description"
-                  label="Description"
-                  auto-grow
-                  outlined
-                  required
-                ></v-textarea>
-                <v-file-input
-                  label="Image"
-                  outlined
-                  dense
-                  @change="onFilePicked"
-                ></v-file-input>
-
-                <v-btn
-                  :disabled="!valid"
-                  color="success"
-                  class="mr-4"
-                  @click="validate"
-                  depressed
-                  rounded
-                >
-                  Save
-                </v-btn>
-
-                <v-btn
-                  color="error"
-                  class="mr-4"
-                  @click="reset"
-                  rounded
-                  depressed
-                >
-                  clear
-                </v-btn>
-              </v-form>
-            </template>
-          </div>
-        </v-card>
+        <CreateRecipe />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import CreateRecipe from '../../components/actions/create-recipe.vue'
 export default {
   name: 'Recipes',
   data() {
@@ -174,38 +102,17 @@ export default {
       select: null,
       units: ['lg', 'l'],
       checkbox: false,
-      recipes: [
-        {
-          name: 'Frozen Yogurt',
-          servings: 1,
-          price_per_serving: 340,
-          ingredients: [
-            {
-              id: '3efsdsfgadfg',
-              name: 'tomatoes',
-              price: 2303,
-              quantity: 2,
-              unit: 'kg',
-            },
-            {
-              id: '3efsqwadfg',
-              name: 't',
-              price: 2303,
-              quantity: 2,
-              unit: 'kg',
-            },
-            {
-              id: '3efsadf2g',
-              name: 'tomatoes',
-              price: 2303,
-              quantity: 2,
-              unit: 'kg',
-            },
-          ],
-        },
-      ],
     }
   },
+  components: {
+    CreateRecipe,
+  },
+  computed: {
+    recipes() {
+      return this.$store.state.app.recipes
+    },
+  },
+
   methods: {
     validate() {
       this.$refs.form.validate()

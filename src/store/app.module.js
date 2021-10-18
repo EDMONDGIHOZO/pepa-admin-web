@@ -6,6 +6,9 @@ export const app = {
     logo: require('../assets/images/pepa_logo.png'),
     ingredients_categories: [],
     ingredients: [],
+    recipecats: [],
+    tempIngredients: [],
+    recipes: [],
     deleted: null,
     dashboardSummary: [],
     unit_types: [
@@ -46,6 +49,22 @@ export const app = {
       }
       userService.deleteIngredient(details)
     },
+    getRecipeCategories({ commit }) {
+      userService.getRecipeCategories().then((response) => {
+        commit('setRecipeCategories', response.data)
+      })
+    },
+    getRecipes({ commit }) {
+      userService.getRecipes().then((response) => {
+        commit('setRecipes', response.data)
+      })
+    },
+    addTempIngredient({ commit }, details) {
+      commit('addTempIng', details)
+    },
+    removeTempIngredient({ commit }, id) {
+      commit('removeTempIng', id)
+    },
   },
 
   mutations: {
@@ -61,6 +80,22 @@ export const app = {
     },
     deleted(state, payload) {
       state.deleted = payload
+    },
+
+    setRecipeCategories(state, payload) {
+      state.recipecats = payload
+    },
+    setRecipes(state, payload) {
+      state.recipes = payload
+    },
+    addTempIng(state, payload) {
+      state.tempIngredients.push(payload)
+    },
+    removeTempIng(state, id) {
+      let index = state.tempIngredients.findIndex(
+        (ing) => ing.ingredient_id == id,
+      )
+      state.tempIngredients.splice(index, 1)
     },
   },
 }

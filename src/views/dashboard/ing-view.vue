@@ -189,14 +189,9 @@ export default {
     },
 
     async deleteIngredient() {
-      await this.$store
-        .dispatch('app/deleteIngredient', this.selectedItem)
-        .then((response) => {
-          if (response) {
-            this.$store.dispatch('app/getingredients')
-            this.dialogDelete = false
-          }
-        })
+      await this.$store.dispatch('app/deleteIngredient', this.selectedItem)
+      this.$store.dispatch('app/getingredients')
+      this.dialogDelete = false
     },
   },
 }

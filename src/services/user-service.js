@@ -115,6 +115,38 @@ class UserService {
     return res
   }
 
+  //   recipes
+  async getRecipeCategories() {
+    const response = await axios.get(`${API_URL}api/v1/recipe-cats`, {
+      headers: authHeader(),
+    })
+    return response
+  }
+  async getRecipes() {
+    const response = await axios.get(`${API_URL}api/v1/recipes`, {
+      headers: authHeader(),
+    })
+    return response
+  }
+  async createRecipe(info) {
+    const results = await axios.put(
+      `${API_URL}admin/recipe/${info.id}`,
+      {
+        name: info.name,
+        description: info.description,
+        prep_time: info.prep_time,
+        cook_time: info.cook_time,
+        servings: info.servings,
+        category_id: info.category_id,
+        ingreds: info.ingredients,
+      },
+      { headers: authHeader() },
+      { errorHandle: false },
+    )
+
+    return results
+  }
+
   getUserBoard() {
     return axios.get(API_URL + 'user', { headers: authHeader() })
   }

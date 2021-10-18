@@ -168,6 +168,8 @@ export default {
           this.$store.dispatch('app/getDashboardSummary')
           this.$store.dispatch('app/getIngeredientCategories')
           this.$store.dispatch('app/getingredients')
+          this.$store.dispatch('app/getRecipeCategories')
+          this.$store.dispatch('app/getRecipes')
           this.loaded = true
         }
       },
