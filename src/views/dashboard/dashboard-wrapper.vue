@@ -118,11 +118,11 @@ export default {
           title: 'Ingredients',
           icon: 'mdi-food-apple',
           subs: [
-            { title: 'ingredients', icon: 'mdi-food', path: 'all-ingredients' },
+            { title: 'ingredients', icon: 'mdi-food', path: 'ingredients' },
             {
               title: 'categories',
               icon: 'mdi-view-headline',
-              path: 'ing-categories',
+              path: 'ingredient-categories',
             },
           ],
         },
@@ -131,7 +131,7 @@ export default {
           icon: 'mdi-food',
           subs: [
             { title: 'Recipes', icon: 'mdi-food', path: 'recipes' },
-            { title: 'categories', icon: 'mdi-eye' },
+            { title: 'categories', icon: 'mdi-eye', path: 'recipe-categories' },
           ],
         },
         { title: 'orders', icon: 'mdi-wheel-barrow' },
@@ -166,10 +166,10 @@ export default {
         if (response.statusText === 'OK') {
           this.currentUser = response.data.user
           this.$store.dispatch('app/getDashboardSummary')
-          this.$store.dispatch('app/getIngeredientCategories')
-          this.$store.dispatch('app/getingredients')
-          this.$store.dispatch('app/getRecipeCategories')
-          this.$store.dispatch('app/getRecipes')
+          this.$store.dispatch('ingredientCategory/getAll')
+          this.$store.dispatch('ingredient/getAll')
+          this.$store.dispatch('recipeCategory/getAll')
+          this.$store.dispatch('recipe/getAll')
           this.loaded = true
         }
       },

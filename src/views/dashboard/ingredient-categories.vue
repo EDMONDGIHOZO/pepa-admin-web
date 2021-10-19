@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <!-- create category section -->
-    <!-- view and crud categories section -->
     <v-row wrap>
       <v-col cols="12" md="8">
         <v-card outlined class="pa-4">
@@ -40,7 +39,11 @@
                       class="d-flex flex-center justify-between flex-row align-center"
                     >
                       <edit-ingredient-category :category="item" />
-                      <delete-dialog :name="item.name" :id="item.id" />
+                      <delete-dialog
+                        :name="item.name"
+                        :itemId="item.id"
+                        itemType="ingredientCategory"
+                      />
                       <v-btn
                         color="primary"
                         icon
@@ -76,7 +79,7 @@
             <p>new category</p>
           </div>
           <div>
-            <ingredient-category-form @on-submit="handleSaveCategory" />
+            <category-form @on-submit="handleSaveCategory" ref="form" />
           </div>
         </v-card>
         <v-snackbar v-model="showSingleMessage" multi-line color="primary">
@@ -86,7 +89,7 @@
               :color="messageColor"
               text
               v-bind="attrs"
-              @click="showSingleMessage = false"
+              @click="closeAlert()"
             >
               Close
             </v-btn>
@@ -98,14 +101,14 @@
 </template>
 
 <script>
-import userService from '../../services/user-service'
-import IngredientCategoryForm from '../../components/actions/ingredient-category-form.vue'
+import CategoryForm from '../../components/actions/category-form.vue'
 import deleteDialog from '../../components/dialogs/delete-dialog.vue'
 import editIngredientCategory from '../../components/dialogs/edit-category-ingredient.vue'
+import ingredientCategoryService from '../../services/ingredient-category.service'
 export default {
-  name: 'IngCategoriesView',
+  name: 'IngredientCategories',
   components: {
-    IngredientCategoryForm,
+    CategoryForm,
     deleteDialog,
     editIngredientCategory,
   },
@@ -130,19 +133,36 @@ export default {
 
   computed: {
     categories() {
-      return this.$store.state.app.ingredients_categories
+      return this.$store.state.ingredientCategory.all
     },
   },
 
+  created() {
+    this.initialize()
+  },
+
   methods: {
+    initialize() {
+      this.$store.dispatch('ingredientCategory/getAll')
+    },
+
     validate() {
       this.$refs.form.validate()
     },
+
+    closeAlert() {
+      this.showSingleMessage = false
+      this.$refs.form.reset()
+    },
+
     reset() {
       this.$refs.form.reset()
     },
     navigate(id) {
-      this.$router.push({ name: 'single-ing-cat', params: { catid: id } })
+      this.$router.push({
+        name: 'ingredient-category',
+        params: { category_id: id },
+      })
     },
     async handleSaveCategory(IngredientCategoryForm) {
       this.showMessage = false
@@ -153,14 +173,14 @@ export default {
       }
       this.saving = true
       //   //   save the category
-      userService
-        .createIngCategories(formData)
+      ingredientCategoryService
+        .create(formData)
         .then((response) => {
           if (response.status === 200) {
             this.saving = false
             this.message = 'the category is saved'
+            this.initialize()
             this.showSingleMessage = true
-            this.$store.dispatch('app/getIngeredientCategories')
           } else {
             return {}
           }

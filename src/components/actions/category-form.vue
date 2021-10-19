@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import UserService from '../../services/user-service'
+import UserService from '../../services/general.service'
 
 export default {
-  name: 'IngredientCategoryForm',
+  name: 'CategoryForm',
   props: {
     category: {
       type: Object,

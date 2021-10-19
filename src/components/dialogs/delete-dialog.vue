@@ -15,7 +15,11 @@
           <v-toolbar color="red" elevation="0" class="white--text">
             delete {{ name }}
           </v-toolbar>
-          <v-progress-linear color="accent" indeterminate height="10"></v-progress-linear>
+          <v-progress-linear
+            color="accent"
+            indeterminate
+            height="10"
+          ></v-progress-linear>
           <v-card-text>
             <div class="h2-text">Are your sure?</div>
           </v-card-text>
@@ -30,10 +34,11 @@
 </template>
 
 <script>
-import UserService from '../../services/user-service'
+import ingredientCategoryService from '../../services/ingredient-category.service'
+import recipeCategoryService from '../../services/recipe.service'
 export default {
   name: 'deleteDialog',
-  props: ['name', 'id'],
+  props: ['name', 'itemId', 'itemType'],
   data() {
     return {
       loading: false,
@@ -43,17 +48,13 @@ export default {
   methods: {
     deleteCategory() {
       this.loading = true
-      UserService.deleteIngCategories(this.id)
-        .then((response) => {
-          if (response.status === 200) {
-              console.log(response)
-            this.$store.dispatch('app/getIngeredientCategories'),
-              (this.showdialog = false)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      if (this.itemType === 'recipeCategory') {
+        recipeCategoryService.destroy(this.itemId)
+      } else if (this.itemType === 'ingredientCategory') {
+        // delete the item
+        ingredientCategoryService.destroy(this.itemId)
+      }
+      location.reload()
     },
   },
 }

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import userService from '../../services/user-service'
+import ingredientService from '../../services/ingredient.service'
 import IngredientForm from '../actions/ingredient-form.vue'
 export default {
   name: 'editIngredient',
@@ -73,8 +73,8 @@ export default {
         image_url: ingredientDetails.image_url,
       }
 
-      userService
-        .editEng(formData, ingredientDetails.id)
+      ingredientService
+        .update(formData, ingredientDetails.id)
         .then((response) => {
           if (response.status === 200) {
             this.$store.dispatch('app/getingredients')

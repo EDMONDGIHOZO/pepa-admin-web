@@ -8,8 +8,8 @@
           <div class="row-title">
             <p>All ingredients</p>
           </div>
-          <div>
-            <v-simple-table v-if="loaded">
+          <div v-if="loaded">
+            <v-simple-table>
               <template v-slot:default>
                 <thead>
                   <tr>
@@ -56,7 +56,9 @@
                 </tbody>
               </template>
             </v-simple-table>
-            <p v-else>0 ingredients</p>
+          </div>
+          <div v-else>
+            <v-skeleton-loader class="max-auto" type="table" />
           </div>
         </v-card>
       </v-col>
@@ -86,16 +88,14 @@
 </template>
 
 <script>
-import UserService from '../../services/user-service'
 import CreateIngredient from '@/components/actions/create-ingredient.vue'
 import editIngredient from '@/components/dialogs/edit-ingredient.vue'
+
 export default {
-  name: 'IngView',
+  name: 'Ingredients',
   data() {
     return {
       search: '',
-      loaded: false,
-      categories: null,
       dialogDelete: false,
       selectedItem: 0,
       table_headers: [
@@ -152,23 +152,15 @@ export default {
 
   computed: {
     ingredients() {
-      return this.$store.state.app.ingredients
+      return this.$store.state.ingredient.all
+    },
+    loaded() {
+      return this.$store.state.ingredient.loaded
     },
   },
 
-  mounted() {
-    UserService.getIngCategories().then(
-      (data) => {
-        this.categories = data
-        this.loaded = true
-      },
-      (error) => {
-        this.currentUser =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString()
-      },
-    )
+  created() {
+    this.$store.dispatch('ingredientCategory/getAll')
   },
   methods: {
     validate() {
@@ -192,6 +184,7 @@ export default {
       await this.$store.dispatch('app/deleteIngredient', this.selectedItem)
       this.$store.dispatch('app/getingredients')
       this.dialogDelete = false
+      location.reload()
     },
   },
 }

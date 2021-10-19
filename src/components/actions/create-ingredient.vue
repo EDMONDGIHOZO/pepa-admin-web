@@ -21,8 +21,6 @@
             >
               <ValidationProvider name="name" rules="required">
                 <v-text-field
-                  persistent-hint
-                  hint="the name of is not changeable! once created it's over"
                   v-model="ingredient.name"
                   dense
                   slot-scope="{ errors, valid }"
@@ -83,7 +81,7 @@
                   :items="categories"
                   :error-messages="errors"
                   item-text="name"
-                  item-value="name"
+                  item-value="id"
                   v-model="ingredient.category_id"
                   label="category"
                   solo
@@ -124,7 +122,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
-import UserService from '../../services/user-service'
+import ingredientService from '../../services/ingredient.service'
 export default {
   name: 'CreateIngredient',
   mixins: [upload, selectFile],
@@ -134,7 +132,7 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.state.app.ingredients_categories
+      return this.$store.state.ingredientCategory.all
     },
   },
   data: () => {
@@ -185,7 +183,8 @@ export default {
           category_id: this.ingredient.category_id,
           image_url: this.ingredient.image_url,
         }
-        UserService.createIngredient(formData)
+        ingredientService
+          .create(formData)
           .then((response) => {
             console.log(response)
           })

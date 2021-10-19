@@ -22,10 +22,7 @@
           </v-toolbar>
           <v-progress-linear v-if="loading" indeterminate color="orange" />
           <div class="pa-4">
-            <ingredient-category-form
-              @on-submit="handleEditing"
-              :category="category"
-            />
+            <category-form @on-submit="handleEditing" :category="category" />
           </div>
         </v-sheet>
       </template>
@@ -34,8 +31,8 @@
 </template>
 
 <script>
-import UserService from '../../services/user-service'
-import IngredientCategoryForm from '../../components/actions/ingredient-category-form.vue'
+import ingredientCategoryService from '../../services/ingredient-category.service'
+import CategoryForm from '../actions/category-form.vue'
 export default {
   name: 'editIngredientCategory',
   props: {
@@ -43,7 +40,7 @@ export default {
       type: Object,
     },
   },
-  components: { IngredientCategoryForm },
+  components: { CategoryForm },
   data() {
     return {
       loading: false,
@@ -59,10 +56,11 @@ export default {
         image_url: IngredientCategoryForm.image_url,
         id: this.category.id,
       }
-      UserService.editEngCategory(formData)
+      ingredientCategoryService
+        .update(formData)
         .then((response) => {
           if (response.status === 200) {
-            this.$store.dispatch('app/getIngeredientCategories')
+            this.$store.dispatch('ingredientCategory/getAll')
             this.loading = false
             this.showdialog = false
           }

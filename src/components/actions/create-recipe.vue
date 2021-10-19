@@ -106,7 +106,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
-import UserService from '../../services/user-service'
+import UserService from '../../services/general.service'
 import AddIngToRecipe from './add-ing-to-recipe.vue'
 export default {
   name: 'CreateRecipe',
@@ -162,6 +162,7 @@ export default {
           cook_time: this.recipe.cook_time,
           servings: this.recipe.servings,
           category_id: this.recipe.category_id,
+          ingreds: this.temporaryIngredients,
         }
         UserService.createIngredient(formData)
           .then((response) => {

@@ -4,9 +4,10 @@ import Login from '../views/user/Login'
 import DashboardWrapper from '../views/dashboard/dashboard-wrapper'
 import Profile from '../views/user/Profile.vue'
 import Home from '../views/dashboard/Home'
-import IngCategoriesView from '../views/dashboard/ing-categories-view'
-import IngView from '../views/dashboard/ing-view'
-import IngredientCategoryView from '../views/dashboard/single-ing-cat.vue'
+import IngredientCategories from '../views/dashboard/ingredient-categories.vue'
+import IngredientCategory from '../views/dashboard/ingredient-category.vue'
+import Ingredients from '../views/dashboard/ingredients.vue'
+import RecipeCategories from '../views/dashboard/recipe-categories.vue'
 import Recipes from '../views/dashboard/recipes'
 import NotFound from '../views/404/not-found'
 
@@ -40,28 +41,36 @@ const routes = [
       },
 
       {
-        path: 'ing-categories',
-        name: 'ing-categories',
-        component: IngCategoriesView,
+        path: 'ingredient-categories',
+        name: 'ingredient-categories',
+        component: IngredientCategories,
         meta: {
-          title: 'dashboard',
+          title: 'Ingredient Categories',
         },
       },
       {
-        path: 'single-ing-cat/:catid',
-        name: 'single-ing-cat',
+        path: 'category/:category_id',
+        name: 'ingredient-category',
         props: true,
-        component: IngredientCategoryView,
+        component: IngredientCategory,
         meta: {
           title: 'category',
         },
       },
       {
-        path: 'all-ingredients',
-        name: 'all-ingredients',
-        component: IngView,
+        path: 'ingredients',
+        name: 'ingredients',
+        component: Ingredients,
         meta: {
-          title: 'dashboard',
+          title: 'ingredients',
+        },
+      },
+      {
+        path: 'recipe-categories',
+        name: 'recipe-categories',
+        component: RecipeCategories,
+        meta: {
+          title: 'Recipe Categories',
         },
       },
       {

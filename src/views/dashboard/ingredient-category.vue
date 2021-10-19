@@ -112,14 +112,16 @@
 </template>
 
 <script>
-import UserService from '../../services/user-service'
+import ingredientCategoryService from '../../services/ingredient-category.service'
 export default {
-  props: ['catid'],
+  props: ['category_id'],
+  name: 'IngredientCategory',
   data: () => ({
     dialog: false,
     search: '',
-    dialogDelete: false,
+    ingredients: [],
     category_name: '',
+    dialogDelete: false,
     headers: [
       {
         text: 'Name',
@@ -133,7 +135,6 @@ export default {
       { text: 'Image', value: 'image_url' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    ingredients: [],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -164,7 +165,7 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete()
     },
-    catid: function (newVal, oldVal) {
+    category_id: function (newVal, oldVal) {
       // watch it
       if (newVal !== oldVal) {
         this.initialize()
@@ -172,21 +173,21 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     this.initialize()
   },
 
   methods: {
-    initialize() {
-      UserService.viewEngCategory(this.catid)
+    async initialize() {
+      await ingredientCategoryService
+        .show(this.category_id)
         .then((response) => {
           if (response.status === 200) {
             this.ingredients = response.data.data.ingredients
             this.category_name = response.data.data.name
+          } else {
+            alert('something went wrong')
           }
-        })
-        .catch((error) => {
-          console.log(error)
         })
     },
 
