@@ -6,7 +6,8 @@ export const ingredient = {
     all: [],
     loaded: false,
     tempIngredients: [],
-    deleted: null,
+    doneDeletion: false,
+    deleteDialog: false,
     unit_types: [
       {
         id: '23',
@@ -27,11 +28,23 @@ export const ingredient = {
     },
 
     destroy({ commit }, id) {
-      commit('DELETED')
       let details = {
         item_id: id,
       }
-      ingredientService.destroy(details)
+      ingredientService
+        .destroy(details)
+        .then((response) => {
+          if (response.status === 200) {
+            commit('SET_DELETE_DIALOG', false)
+            return 'success'
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 500) {
+            alert('this ingredient can not be deleted!')
+            commit('SET_DELETE_DIALOG', false)
+          }
+        })
     },
 
     // this is used while creating a recipe, the selected ingredients are saved in state bofore being posted
@@ -40,6 +53,9 @@ export const ingredient = {
     },
     removeTempIngredient({ commit }, id) {
       commit('REMOVE_TEMPOLARY_INGREDIENT', id)
+    },
+    setDeleteDialog({ commit }, pld) {
+      commit('SET_DELETE_DIALOG', pld)
     },
   },
 
@@ -51,6 +67,9 @@ export const ingredient = {
     DELETED(state, payload) {
       state.deleted = payload
     },
+    SET_DELETE_DIALOG(state, payload) {
+      state.deleteDialog = payload
+    },
     ADD_TEMPOLARY_INGREDIENTS(state, payload) {
       state.tempIngredients.push(payload)
     },
@@ -59,6 +78,12 @@ export const ingredient = {
         (ing) => ing.ingredient_id == id,
       )
       state.tempIngredients.splice(index, 1)
+    },
+  },
+
+  getters: {
+    allIngredients: (state) => {
+      return state.all
     },
   },
 }

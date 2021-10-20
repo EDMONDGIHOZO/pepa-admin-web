@@ -61,6 +61,7 @@
             <v-skeleton-loader class="max-auto" type="table" />
           </div>
         </v-card>
+        <deletion-alert message="deleted" class="ma-5" v-if="deleted" />
       </v-col>
       <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card>
@@ -69,7 +70,7 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary darken-1" text @click="dialogDelete = false">
+            <v-btn color="primary darken-1" text @click="closeDeleteDialog">
               Cancel
             </v-btn>
             <v-btn color="primary darken-1" text @click="deleteIngredient">
@@ -90,13 +91,13 @@
 <script>
 import CreateIngredient from '@/components/actions/create-ingredient.vue'
 import editIngredient from '@/components/dialogs/edit-ingredient.vue'
+import DeletionAlert from '../../components/alerts/deletion-alert.vue'
 
 export default {
   name: 'Ingredients',
   data() {
     return {
       search: '',
-      dialogDelete: false,
       selectedItem: 0,
       table_headers: [
         {
@@ -148,6 +149,7 @@ export default {
   components: {
     'create-ingredient': CreateIngredient,
     'edit-ingredient': editIngredient,
+    'deletion-alert': DeletionAlert,
   },
 
   computed: {
@@ -156,6 +158,12 @@ export default {
     },
     loaded() {
       return this.$store.state.ingredient.loaded
+    },
+    deleted() {
+      return this.$store.state.ingredient.doneDeletion
+    },
+    dialogDelete() {
+      return this.$store.state.ingredient.deleteDialog
     },
   },
 
@@ -174,17 +182,17 @@ export default {
     },
     showDeleteDialog(id) {
       this.selectedItem = id
-      this.dialogDelete = true
+      this.$store.dispatch('ingredient/setDeleteDialog', true)
+    },
+    closeDeleteDialog() {
+      this.$store.dispatch('ingredient/setDeleteDialog', false)
     },
     handleIngredientEdit() {
       console.log('editing the shit')
     },
 
     async deleteIngredient() {
-      await this.$store.dispatch('app/deleteIngredient', this.selectedItem)
-      this.$store.dispatch('app/getingredients')
-      this.dialogDelete = false
-      location.reload()
+      this.$store.dispatch('ingredient/destroy', this.selectedItem)
     },
   },
 }
