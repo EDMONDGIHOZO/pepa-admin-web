@@ -3,20 +3,20 @@ import recipeService from '../../services/recipe.service'
 export const recipe = {
   namespaced: true,
   state: {
-    recipes: [],
+    all: [],
   },
 
   actions: {
     getAll({ commit }) {
-      recipeService.index().then((response) => {
-        commit('SET_ALL_RECIPES', response.data)
+      recipeService.index().then((recipes) => {
+        commit('SET_ALL_RECIPES', recipes)
       })
     },
   },
 
   mutations: {
     SET_ALL_RECIPES(state, payload) {
-      state.recipes = payload
+      state.all = payload
     },
   },
 }

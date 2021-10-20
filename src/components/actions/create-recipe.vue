@@ -32,6 +32,64 @@
                   label="name"
                 ></v-text-field>
               </ValidationProvider>
+              <ValidationProvider name="cook time" rules="required">
+                <v-text-field
+                  v-model="recipe.cook_time"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  type="number"
+                  background-color="white"
+                  placeholder="eg: 3"
+                  label="cook time"
+                  persistent-hint
+                  hint="this must be in minutes"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="prep time" rules="required">
+                <v-text-field
+                  v-model="recipe.prep_time"
+                  dense
+                  type="number"
+                  hint="this must be in minutes"
+                  persistent-hint
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  background-color="white"
+                  placeholder="eg: 3"
+                  label="prep time"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="servings" rules="required">
+                <v-text-field
+                  v-model="recipe.servings"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  background-color="white"
+                  placeholder="eg: 3"
+                  label="servings"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider name="description" rules="required">
+                <v-text-field
+                  v-model="recipe.description"
+                  dense
+                  slot-scope="{ errors, valid }"
+                  :success="valid"
+                  :error-messages="errors"
+                  solo
+                  background-color="white"
+                  placeholder="eg: for kids"
+                  label="description"
+                ></v-text-field>
+              </ValidationProvider>
               <ValidationProvider name="category" rules="required">
                 <v-select
                   slot-scope="{ errors, valid }"
@@ -106,8 +164,8 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
-import UserService from '../../services/general.service'
 import AddIngToRecipe from './add-ing-to-recipe.vue'
+import recipeService from '../../services/recipe.service'
 export default {
   name: 'CreateRecipe',
   mixins: [upload, selectFile],
@@ -118,10 +176,10 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.state.app.recipecats
+      return this.$store.state.recipeCategory.all
     },
     temporaryIngredients() {
-      return this.$store.state.app.tempIngredients
+      return this.$store.state.ingredient.tempIngredients
     },
   },
   data: () => {
@@ -164,7 +222,8 @@ export default {
           category_id: this.recipe.category_id,
           ingreds: this.temporaryIngredients,
         }
-        UserService.createIngredient(formData)
+        recipeService
+          .create(formData)
           .then((response) => {
             console.log(response)
           })
@@ -172,7 +231,7 @@ export default {
             this.errors = error.response.data.messages.errors
             this.showErrors = true
           })
-        this.$store.dispatch('app/getingredients')
+        this.$store.dispatch('ingredient/getAll')
         this.saving = false
         this.reset()
       }
@@ -182,7 +241,7 @@ export default {
       this.$refs.ingredientform.reset()
     },
     removeIng(id) {
-      this.$store.dispatch('app/removeTempIngredient', id)
+      this.$store.dispatch('ingredient/removeTempIngredient', id)
     },
   },
 }

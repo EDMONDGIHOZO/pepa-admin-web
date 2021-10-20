@@ -39,8 +39,11 @@
                     <td
                       class="d-flex flex-center justify-between flex-row align-center"
                     >
-                      <edit-ingredient-category :category="item" />
-                      <delete-dialog :name="item.name" :id="item.id" />
+                      <delete-dialog
+                        :itemId="item.id"
+                        :name="item.name"
+                        itemType="recipeCategory"
+                      />
                       <v-btn
                         color="primary"
                         icon
@@ -98,16 +101,14 @@
 </template>
 
 <script>
-import userService from '../../services/general.service'
 import CategoryForm from '../../components/actions/category-form.vue'
 import deleteDialog from '../../components/dialogs/delete-dialog.vue'
-import editIngredientCategory from '../../components/dialogs/edit-category-ingredient.vue'
+import recipeCategoryService from '../../services/recipe-category.service'
 export default {
   name: 'RecipeCategories',
   components: {
     CategoryForm,
     deleteDialog,
-    editIngredientCategory,
   },
   data() {
     return {
@@ -153,14 +154,14 @@ export default {
       }
       this.saving = true
       //   //   save the category
-      userService
-        .createRecipeCategory(formData)
+      recipeCategoryService
+        .create(formData)
         .then((response) => {
           if (response.status === 200) {
             this.saving = false
             this.message = 'the category is saved'
             this.showSingleMessage = true
-            this.$store.dispatch('app/getRecipeCategories')
+            this.$store.dispatch('recipeCategory/getAll')
             this.$refs.catform.reset()
           } else {
             return {}

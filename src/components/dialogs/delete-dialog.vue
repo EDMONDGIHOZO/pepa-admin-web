@@ -35,7 +35,7 @@
 
 <script>
 import ingredientCategoryService from '../../services/ingredient-category.service'
-import recipeCategoryService from '../../services/recipe.service'
+import recipeCategoryService from '../../services/recipe-category.service'
 export default {
   name: 'deleteDialog',
   props: ['name', 'itemId', 'itemType'],
@@ -50,11 +50,14 @@ export default {
       this.loading = true
       if (this.itemType === 'recipeCategory') {
         recipeCategoryService.destroy(this.itemId)
+        this.$store.dispatch('recipeCategory/getAll')
       } else if (this.itemType === 'ingredientCategory') {
         // delete the item
         ingredientCategoryService.destroy(this.itemId)
       }
-      location.reload()
+
+      this.loading = false
+      this.showdialog = false
     },
   },
 }

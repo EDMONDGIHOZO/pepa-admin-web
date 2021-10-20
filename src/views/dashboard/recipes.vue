@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     recipes() {
-      return this.$store.state.app.recipes
+      return this.$store.state.recipe.all
     },
   },
 

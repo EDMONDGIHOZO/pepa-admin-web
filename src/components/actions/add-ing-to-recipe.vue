@@ -76,10 +76,10 @@ export default {
   },
   computed: {
     ingredients() {
-      return this.$store.state.app.ingredients
+      return this.$store.state.ingredient.all
     },
     tempIngredients() {
-      return this.$store.state.app.tempIngredients
+      return this.$store.state.ingredient.tempIngredients
     },
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
       let index = this.tempIngredients.findIndex(
         (ing) => ing.ingredient_id == this.ingredientObject.id,
       )
-     
+
       if (index === -1) {
         const form = {
           name: this.ingredientObject.name,
@@ -96,7 +96,7 @@ export default {
           ingredient_id: this.ingredientObject.id,
           unit_type: this.ingredientObject.unit_type,
         }
-        this.$store.dispatch('app/addTempIngredient', form)
+        this.$store.dispatch('ingredient/addTempIngredient', form)
         ;(this.ingredientObject = null), (this.quantity = null)
         this.dialog = false
       } else {

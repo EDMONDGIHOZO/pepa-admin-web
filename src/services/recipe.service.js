@@ -8,13 +8,17 @@ const API_URL =
 
 class RecipeService {
   // recipe categories section
-  async store(categoryInfo) {
+  async create(inputs) {
     const results = await axios.post(
-      `${API_URL}admin/recipe-category`,
+      `${API_URL}admin/recipe`,
       {
-        name: categoryInfo.name,
-        description: categoryInfo.description,
-        thumbnail: categoryInfo.thumbnail,
+        name: inputs.name,
+        description: inputs.description,
+        prep_time: inputs.prep_time,
+        cook_time: inputs.cook_time,
+        servings: inputs.servings,
+        category_id: inputs.category_id,
+        ingreds: inputs.ingreds,
       },
       { headers: authHeader() },
       { errorHandle: false },
@@ -23,12 +27,11 @@ class RecipeService {
   }
 
   async index() {
-    const response = await axios.get(`${API_URL}api/v1/recipe-cats`, {
+    const response = await axios.get(`${API_URL}api/v1/recipes`, {
       headers: authHeader(),
     })
     return response.data
   }
-  // recipe section
 }
 
 export default new RecipeService()

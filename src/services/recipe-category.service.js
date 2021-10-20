@@ -8,7 +8,7 @@ const API_URL =
 
 class RecipeCategoryService {
   // recipe categories section
-  async store(categoryInfo) {
+  async create(categoryInfo) {
     const results = await axios.post(
       `${API_URL}admin/recipe-category`,
       {
@@ -27,6 +27,14 @@ class RecipeCategoryService {
       headers: authHeader(),
     })
     return response.data
+  }
+
+  async destroy(category_id) {
+    const res = await axios.delete(
+      `${API_URL}admin/recipe-category/remove/${category_id}`,
+      { headers: authHeader() },
+    )
+    return res
   }
 }
 

@@ -16,7 +16,11 @@ export const recipeCategory = {
 
   mutations: {
     SET_RECIPE_CATEGORIES(state, payload) {
-      state.recipeCategories = payload
+      state.all = payload
     },
   },
+
+  getters: {
+      all: (state) => state.all
+  }
 }
