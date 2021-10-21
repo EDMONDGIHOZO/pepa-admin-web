@@ -9,7 +9,7 @@ const API_URL =
 class RecipeService {
   // recipe categories section
   async create(inputs) {
-    const results = await axios.post(
+    let res = await axios.post(
       `${API_URL}admin/recipe`,
       {
         name: inputs.name,
@@ -23,14 +23,21 @@ class RecipeService {
       { headers: authHeader() },
       { errorHandle: false },
     )
-    return results
+    return res
   }
 
-  async index() {
-    const response = await axios.get(`${API_URL}api/v1/recipes`, {
+  async index(url) {
+    const response = await axios.get(`${API_URL}api/v1/${url}`, {
       headers: authHeader(),
     })
-    return response.data
+    return response
+  }
+
+  async destroy(id) {
+    const res = await axios.delete(`${API_URL}admin/recipe/remove/${id}`, {
+      headers: authHeader(),
+    })
+    return res
   }
 }
 

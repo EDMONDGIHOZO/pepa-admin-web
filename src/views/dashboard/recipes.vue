@@ -60,6 +60,7 @@
                         small
                         class="mr-2 white--text"
                         icon
+                        @click="deleteRecipe(item.id)"
                       >
                         <v-icon small>mdi-delete</v-icon>
                       </v-btn>
@@ -75,6 +76,7 @@
         <CreateRecipe />
       </v-col>
     </v-row>
+    <v-progress-linear :active="isDeleting" color="accent" indeterminate />
   </div>
 </template>
 
@@ -111,6 +113,9 @@ export default {
     recipes() {
       return this.$store.state.recipe.all
     },
+    isDeleting() {
+      return this.$store.state.recipe.isDeleting
+    },
   },
 
   methods: {
@@ -120,6 +125,11 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
+
+    deleteRecipe(id) {
+      this.$store.dispatch('recipe/destroyRecipe', id)
+    },
+
     onFilePicked(e) {
       // get the added files
       const files = e.target.files

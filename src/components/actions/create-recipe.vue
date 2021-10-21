@@ -165,7 +165,6 @@ import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
 import AddIngToRecipe from './add-ing-to-recipe.vue'
-import recipeService from '../../services/recipe.service'
 export default {
   name: 'CreateRecipe',
   mixins: [upload, selectFile],
@@ -222,23 +221,9 @@ export default {
           category_id: this.recipe.category_id,
           ingreds: this.temporaryIngredients,
         }
-        recipeService
-          .create(formData)
-          .then((response) => {
-            console.log(response)
-          })
-          .catch((error) => {
-            this.errors = error.response.data.messages.errors
-            this.showErrors = true
-          })
-        this.$store.dispatch('ingredient/getAll')
+        this.$store.dispatch('recipe/createRecipe', formData)
         this.saving = false
-        this.reset()
       }
-    },
-
-    reset() {
-      this.$refs.ingredientform.reset()
     },
     removeIng(id) {
       this.$store.dispatch('ingredient/removeTempIngredient', id)
