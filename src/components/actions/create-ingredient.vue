@@ -192,9 +192,8 @@ export default {
             this.errors = error.response.data.messages.errors
             this.showErrors = true
           })
-        this.$store.dispatch('ingredient/getAll')
         this.saving = false
-        this.reset()
+        location.reload()
       }
     },
 

@@ -6,12 +6,14 @@ export const recipe = {
     all: [],
     recipePaginatedData: null,
     recipe: null,
+    singleLoaded: false,
     isloading: false,
     isCreating: false,
     createdData: null,
     isupdating: false,
     isDeleting: false,
     deletedData: false,
+    featured: null,
   },
 
   getters: {
@@ -44,6 +46,36 @@ export const recipe = {
         })
     },
 
+    async getRecipe({ commit, dispatch }, recipe_id) {
+      await recipeService
+        .show(recipe_id)
+        .then((res) => {
+          if (res.status === 200) {
+            commit('SET_RECIPE', res.data)
+            let ings = res.data.ingredients
+            console.log(ings)
+            dispatch('ingredient/setInitialRecipeIngredients', ings, {
+              root: true,
+            })
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    async getFeatured({ commit }) {
+      await recipeService
+        .featured()
+        .then((res) => {
+          if (res.status === 200) {
+            commit('SET_FEATURED', res.data)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+
     async createRecipe({ commit }, inputs) {
       await recipeService
         .create(inputs)
@@ -57,6 +89,37 @@ export const recipe = {
         .catch((error) => {
           console.log(error.response)
           commit('SET_IS_CREATING', false)
+        })
+    },
+
+    async approveRecipe({ commit }, inputs, id) {
+      await recipeService
+        .approve(inputs, id)
+        .then((response) => {
+          if (response.status === 200) {
+            commit('SET_IS_UPDATING', false)
+            alert('updated')
+            location.reload()
+          }
+        })
+        .catch((error) => {
+          console.log(error.response)
+          commit('SET_IS_UPDATING', false)
+        })
+    },
+    async updateRecipe({ commit }, formData) {
+      await recipeService
+        .update(formData)
+        .then((response) => {
+          if (response.status === 200) {
+            commit('SET_IS_UPDATING', false)
+            alert('updated')
+            location.reload()
+          }
+        })
+        .catch((error) => {
+          console.log(error.response)
+          commit('SET_IS_UPDATING', false)
         })
     },
 
@@ -87,8 +150,18 @@ export const recipe = {
     SET_IS_FETCHING(state, payload) {
       state.isloading = payload
     },
+    SET_IS_UPDATING(state, payload) {
+      state.isupdating = payload
+    },
     SET_IS_DELETING(state, payload) {
       state.isDeleting = payload
+    },
+    SET_RECIPE(state, payload) {
+      state.recipe = payload
+      state.singleLoaded = true
+    },
+    SET_FEATURED(state, payload) {
+      state.featured = payload
     },
   },
 }

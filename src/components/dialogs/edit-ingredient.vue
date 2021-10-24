@@ -77,7 +77,7 @@ export default {
         .update(formData, ingredientDetails.id)
         .then((response) => {
           if (response.status === 200) {
-            this.$store.dispatch('app/getingredients')
+            this.$store.dispatch('ingredient/getingredients')
             this.message = 'your updates are saved ✅'
             this.showMessage = true
             setTimeout((this.showdialog = false), 5000 * 20)

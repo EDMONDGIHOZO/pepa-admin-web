@@ -131,6 +131,7 @@ export default {
           icon: 'mdi-food',
           subs: [
             { title: 'Recipes', icon: 'mdi-food', path: 'recipes' },
+            { title: 'Featured', icon: 'mdi-star', path: 'featureds' },
             { title: 'categories', icon: 'mdi-eye', path: 'recipe-categories' },
           ],
         },

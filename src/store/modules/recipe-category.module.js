@@ -4,12 +4,21 @@ export const recipeCategory = {
   namespaced: true,
   state: {
     all: [],
+    single: null,
   },
 
   actions: {
     getAll({ commit }) {
       recipeCategoryService.index().then((response) => {
         commit('SET_RECIPE_CATEGORIES', response.data)
+      })
+    },
+    getSingle({ commit }, id) {
+      commit('SET_IS_FETCHING', true)
+      recipeCategoryService.show(id).then((res) => {
+        if (res.status === 200) {
+          commit('SET_SINGLE', res.data)
+        }
       })
     },
   },
@@ -21,6 +30,6 @@ export const recipeCategory = {
   },
 
   getters: {
-      all: (state) => state.all
-  }
+    all: (state) => state.all,
+  },
 }

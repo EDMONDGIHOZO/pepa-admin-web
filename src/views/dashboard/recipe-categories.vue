@@ -143,7 +143,7 @@ export default {
       this.$refs.form.reset()
     },
     navigate(id) {
-      this.$router.push({ name: 'single-ing-cat', params: { catid: id } })
+      this.$router.push({ name: 'recipe-category', params: { catid: id } })
     },
     async handleSaveCategory(CategoryForm) {
       this.showMessage = false

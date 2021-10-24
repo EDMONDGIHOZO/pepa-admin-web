@@ -5,6 +5,16 @@ export const ingredientCategory = {
   state: {
     all: [],
     category: {},
+    unit_types: [
+      {
+        id: 2,
+        name: 'KG',
+      },
+      {
+        id: 223,
+        name: 'L',
+      },
+    ],
   },
 
   actions: {
@@ -29,5 +39,4 @@ export const ingredientCategory = {
       state.category = payload
     },
   },
-
 }

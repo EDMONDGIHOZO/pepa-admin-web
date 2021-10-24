@@ -32,6 +32,40 @@ class RecipeService {
     })
     return response
   }
+  async featured(url) {
+    const response = await axios.get(`${API_URL}api/v1/featured/${url}`, {
+      headers: authHeader(),
+    })
+    return response
+  }
+  async show(recipe_id) {
+    const res = await axios.get(`${API_URL}api/v1/recipes/${recipe_id}`)
+    return res
+  }
+  async approve(details) {
+    const res = await axios.put(
+      `${API_URL}admin/recipe/approve/${details.id}`,
+      { active: details.active },
+      { headers: authHeader() },
+    )
+    return res
+  }
+  async update(details) {
+    const res = await axios.put(
+      `${API_URL}admin/recipe/${details.id}`,
+      {
+        name: details.name,
+        description: details.description,
+        cook_time: details.cook_time,
+        prep_time: details.prep_time,
+        category_id: details.category_id,
+        ingreds: details.ingreds,
+        servings: details.servings,
+      },
+      { headers: authHeader() },
+    )
+    return res
+  }
 
   async destroy(id) {
     const res = await axios.delete(`${API_URL}admin/recipe/remove/${id}`, {

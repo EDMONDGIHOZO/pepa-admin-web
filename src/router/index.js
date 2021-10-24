@@ -9,6 +9,9 @@ import IngredientCategory from '../views/dashboard/ingredient-category.vue'
 import Ingredients from '../views/dashboard/ingredients.vue'
 import RecipeCategories from '../views/dashboard/recipe-categories.vue'
 import Recipes from '../views/dashboard/recipes'
+import RecipeView from '../views/dashboard/single-recipe.vue'
+import RecipeCategoryView from '../views/dashboard/single-recipe-category.vue'
+import Featureds from '../views/dashboard/featureds.vue'
 import NotFound from '../views/404/not-found'
 
 Vue.use(VueRouter)
@@ -74,11 +77,37 @@ const routes = [
         },
       },
       {
+        path: 'recipe-categories/:category_id',
+        name: 'recipe-category',
+        props: true,
+        component: RecipeCategoryView,
+        meta: {
+          title: 'recipe category',
+        },
+      },
+      {
         path: 'recipes',
         name: 'recipes',
         component: Recipes,
         meta: {
           title: 'recipes',
+        },
+      },
+      {
+        path: 'featureds',
+        name: 'featureds',
+        component: Featureds,
+        meta: {
+          title: 'Featured items',
+        },
+      },
+      {
+        path: 'recipe/:recipe_id',
+        name: 'recipe',
+        props: true,
+        component: RecipeView,
+        meta: {
+          title: 'recipe',
         },
       },
     ],

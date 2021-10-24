@@ -133,10 +133,10 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.state.app.ingredients_categories
+      return this.$store.state.ingredientCategory.all
     },
     unit_types() {
-      return this.$store.state.app.unit_types
+      return this.$store.state.ingredient.unit_types
     },
   },
   methods: {

@@ -20,6 +20,9 @@
                       description
                     </th>
                     <th class="text-left">
+                      status
+                    </th>
+                    <th class="text-left">
                       time
                     </th>
                     <th class="text-left">
@@ -37,6 +40,15 @@
                   <tr v-for="item in recipes" :key="item.id">
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
+                    <td>
+                      <v-chip
+                        class="mx-2"
+                        :color="item.active ? 'success' : 'accent'"
+                        
+                      >
+                        {{ item.active ? 'live' : 'draft' }}
+                      </v-chip>
+                    </td>
                     <td>{{ item.cook_time + item.prep_time }} minutes</td>
                     <td v-if="item.ingredients">
                       {{ item.ingredients.length }}
@@ -51,6 +63,7 @@
                         small
                         class="mr-2 white--text"
                         icon
+                        @click="navigate(item.id)"
                       >
                         <v-icon small>mdi-eye</v-icon>
                       </v-btn>
@@ -124,6 +137,10 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+    },
+
+    navigate(id) {
+      this.$router.push({ name: 'recipe', params: { recipe_id: id } })
     },
 
     deleteRecipe(id) {

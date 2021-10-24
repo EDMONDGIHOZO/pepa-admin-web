@@ -28,6 +28,12 @@ class RecipeCategoryService {
     })
     return response.data
   }
+  async show(id) {
+    const response = await axios.get(`${API_URL}api/v1/recipe-cats/${id}`, {
+      headers: authHeader(),
+    })
+    return response
+  }
 
   async destroy(category_id) {
     const res = await axios.delete(

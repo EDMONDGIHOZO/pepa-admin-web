@@ -15,6 +15,32 @@ class GeneralService {
     })
     return results
   }
+  async getFeatureds(typeName) {
+    const results = axios.get(`${API_URL}api/v1/featured?type=${typeName}`, {
+      headers: authHeader(),
+    })
+    return results
+  }
+  async removeFeatured(id) {
+    const results = axios.delete(`${API_URL}admin/featured/remove/${id}`, {
+      headers: authHeader(),
+    })
+    return results
+  }
+  async createFeatured(formData) {
+    const results = axios.post(
+      `${API_URL}admin/featured`,
+      {
+        item_id: formData.item_id,
+        name: formData.name,
+        type: formData.type,
+      },
+      {
+        headers: authHeader(),
+      },
+    )
+    return results
+  }
 
   async imageUploader(file, onUploadProgress) {
     let formData = new FormData()
@@ -28,7 +54,6 @@ class GeneralService {
     return res
   }
   //   recipes
-  
 }
 
 export default new GeneralService()

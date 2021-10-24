@@ -8,6 +8,7 @@ export const ingredient = {
     tempIngredients: [],
     doneDeletion: false,
     deleteDialog: false,
+    initialIngredients: [],
     unit_types: [
       {
         id: '23',
@@ -48,6 +49,9 @@ export const ingredient = {
     },
 
     // this is used while creating a recipe, the selected ingredients are saved in state bofore being posted
+    setInitialRecipeIngredients({ commit }, ings) {
+      commit('SET_INITIALS', ings)
+    },
     addTempIngredient({ commit }, details) {
       commit('ADD_TEMPOLARY_INGREDIENTS', details)
     },
@@ -64,6 +68,10 @@ export const ingredient = {
       state.all = payload
       state.loaded = true
     },
+    SET_INITIALS(state, payload) {
+      state.initialIngredients = payload
+    },
+
     DELETED(state, payload) {
       state.deleted = payload
     },
