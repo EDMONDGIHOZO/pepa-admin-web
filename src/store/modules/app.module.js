@@ -5,6 +5,38 @@ export const app = {
   state: {
     logo: require('../../assets/images/pepa_logo.png'),
     dashboardSummary: [],
+    mainMenu: [
+      {
+        title: 'Ingredients',
+        icon: 'mdi-food-apple',
+        subs: [
+          { title: 'ingredients', icon: 'mdi-food', path: 'ingredients' },
+          {
+            title: 'categories',
+            icon: 'mdi-view-headline',
+            path: 'ingredient-categories',
+          },
+        ],
+      },
+      {
+        title: 'Recipes',
+        icon: 'mdi-food',
+        subs: [
+          { title: 'Recipes', icon: 'mdi-food', path: 'recipes' },
+          { title: 'Featured', icon: 'mdi-star', path: 'featureds' },
+          { title: 'categories', icon: 'mdi-eye', path: 'recipe-categories' },
+        ],
+      },
+      { title: 'orders', icon: 'mdi-wheel-barrow' },
+      {
+        title: 'users',
+        icon: 'mdi-account-group',
+        subs: [
+          { title: 'staff', icon: 'mdi-account', path: 'staff' },
+          { title: 'all users', icon: 'mdi-account-group' },
+        ],
+      },
+    ],
   },
 
   actions: {

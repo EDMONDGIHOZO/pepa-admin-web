@@ -24,7 +24,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-group
-            v-for="menu in menuitems"
+            v-for="menu in mainMenu"
             :key="menu.title"
             v-model="menu.active"
             :prepend-icon="menu.action"
@@ -105,6 +105,7 @@
 import router from '../../router'
 import Footer from '@/components/navigation/Footer.vue'
 import AuthService from '../../services/auth-service'
+import { mapState } from 'vuex'
 export default {
   data: function () {
     return {
@@ -113,42 +114,13 @@ export default {
       profileimage: require('../../assets/images/avatar.jpg'),
       loaded: false,
       logo: require('../../assets/images/pepaword.png'),
-      menuitems: [
-        {
-          title: 'Ingredients',
-          icon: 'mdi-food-apple',
-          subs: [
-            { title: 'ingredients', icon: 'mdi-food', path: 'ingredients' },
-            {
-              title: 'categories',
-              icon: 'mdi-view-headline',
-              path: 'ingredient-categories',
-            },
-          ],
-        },
-        {
-          title: 'Recipes',
-          icon: 'mdi-food',
-          subs: [
-            { title: 'Recipes', icon: 'mdi-food', path: 'recipes' },
-            { title: 'Featured', icon: 'mdi-star', path: 'featureds' },
-            { title: 'categories', icon: 'mdi-eye', path: 'recipe-categories' },
-          ],
-        },
-        { title: 'orders', icon: 'mdi-wheel-barrow' },
-        {
-          title: 'users',
-          icon: 'mdi-account-group',
-          subs: [
-            { title: 'staff', icon: 'mdi-account', path: 'staff' },
-            { title: 'all users', icon: 'mdi-account-group' },
-          ],
-        },
-      ],
     }
   },
   components: {
     Footer,
+  },
+  computed: {
+    ...mapState('app', ['mainMenu']),
   },
 
   methods: {
