@@ -171,6 +171,7 @@ export default {
           this.$store.dispatch('ingredient/getAll')
           this.$store.dispatch('recipeCategory/getAll')
           this.$store.dispatch('recipe/getAll')
+          this.$store.dispatch('recipe/getFeatured')
           this.loaded = true
         }
       },

@@ -103,6 +103,7 @@
             <v-card-title>
               Featured Recipes
             </v-card-title>
+            
 
             <v-list dense>
               <v-list-item link>
@@ -112,7 +113,7 @@
                   />
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title>Tomatoes</v-list-item-title>
+                  <v-list-item-title>{{featured}}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item link>
@@ -167,6 +168,9 @@ export default {
     dashInfo() {
       return this.$store.state.app.dashboardSummary
     },
+    featured() {
+        return this.$store.state.recipe.featured
+    }
   },
   data() {
     return {
