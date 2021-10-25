@@ -2,9 +2,9 @@
   <div class="container">
     <v-card flat>
       <v-card-title> Orders </v-card-title>
-      <c-card-text>
+      <v-card-text>
         you can review and manage orders with their details.
-      </c-card-text>
+      </v-card-text>
       <v-tabs v-model="tab" left>
         <v-tab v-for="item in filtertabs" :key="item.tab">
           {{ item.title }}
@@ -18,20 +18,16 @@
               :headers="headers"
               :items="orders"
               sort-by="status"
-              group-by="status"
-              show-group-by
+              :search="search"
               class="elevation-1"
             >
               <template v-slot:top>
                 <v-toolbar flat>
+                  <h2>{{ item.tabContentName }} Orders</h2>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
                   <v-dialog v-model="dialog" max-width="500px">
                     <v-card>
-                      <v-card-title>
-                        <span class="text-h5">{{ formTitle }}</span>
-                      </v-card-title>
-
                       <v-card-text>
                         <v-container>
                           <v-row>
@@ -130,22 +126,27 @@ export default {
         {
           id: 1,
           title: "All orders",
+          tabContentName: "all",
         },
         {
           id: 2,
           title: "Completed",
+          tabContentName: "completed",
         },
         {
           id: 3,
           title: "Pending",
+          tabContentName: "pending",
         },
         {
           id: 4,
           title: "Canceled",
+          tabContentName: "canceled",
         },
       ],
       dialog: false,
       dialogDelete: false,
+      search: "",
       headers: [
         {
           text: "Order ID",
@@ -154,6 +155,7 @@ export default {
           value: "order_id",
         },
         { text: "Customer name", value: "customer.name" },
+        { text: "Delivery delivery address", value: "delivery_address" },
         { text: "Delivery date", value: "delivery_date" },
         { text: "Delivery Pricing", value: "delivery_price" },
         { text: "Delivery status", value: "status" },
@@ -180,13 +182,40 @@ export default {
       this.orders = [
         {
           customer: {
-            id: "23",
+            id: "423",
             name: "kalisa john",
             phones: "07834434534",
           },
           order_id: "2334df",
           delivery_date: "12 / march 2021",
           delivery_price: 34000,
+          delivery_address: "Kigali",
+          status: "pending",
+          payment: "Mobile Money",
+        },
+        {
+          customer: {
+            id: "23df3",
+            name: "g john",
+            phones: "07834434534",
+          },
+          order_id: "2334df",
+          delivery_date: "12 / march 2021",
+          delivery_price: 34000,
+          delivery_address: "Kigali",
+          status: "pending",
+          payment: "Mobile Money",
+        },
+        {
+          customer: {
+            id: "2533",
+            name: "sa john",
+            phones: "07834434534",
+          },
+          order_id: "2334df",
+          delivery_date: "12 / march 2021",
+          delivery_price: 34000,
+          delivery_address: "Kigali",
           status: "pending",
           payment: "Mobile Money",
         },
