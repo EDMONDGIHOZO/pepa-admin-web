@@ -27,7 +27,11 @@ export const app = {
           { title: 'categories', icon: 'mdi-eye', path: 'recipe-categories' },
         ],
       },
-      { title: 'orders', icon: 'mdi-wheel-barrow' },
+      {
+        title: 'orders', icon: 'mdi-wheel-barrow', subs: [
+          { title: 'All', icon: 'mdi-cart', path: 'orders' },
+        ],
+      },
       {
         title: 'users',
         icon: 'mdi-account-group',

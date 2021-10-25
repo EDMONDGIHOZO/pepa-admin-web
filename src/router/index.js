@@ -12,6 +12,7 @@ import Recipes from '../views/dashboard/recipes'
 import RecipeView from '../views/dashboard/single-recipe.vue'
 import RecipeCategoryView from '../views/dashboard/single-recipe-category.vue'
 import Featureds from '../views/dashboard/featureds.vue'
+import Orders from '../views/dashboard/orders.vue'
 import NotFound from '../views/404/not-found'
 
 Vue.use(VueRouter)
@@ -99,6 +100,14 @@ const routes = [
         component: Featureds,
         meta: {
           title: 'Featured items',
+        },
+      },
+      {
+        path: 'orders',
+        name: 'orders',
+        component: Orders,
+        meta: {
+          title: 'Orders',
         },
       },
       {

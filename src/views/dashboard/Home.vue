@@ -53,7 +53,11 @@
               />
             </v-col>
             <v-col md="4" sm="12">
-              <detail-card title="recipes" :value="dashInfo.total_recipes" pathTo="recipes" />
+              <detail-card
+                title="recipes"
+                :value="dashInfo.total_recipes"
+                pathTo="recipes"
+              />
             </v-col>
             <v-col md="4" sm="12">
               <detail-card title="suppliers" value="30" pathTo="suppliers" />
@@ -65,21 +69,11 @@
                   <template v-slot:default>
                     <thead>
                       <tr>
-                        <th class="text-left">
-                          Order id
-                        </th>
-                        <th class="text-left">
-                          customer
-                        </th>
-                        <th class="text-left">
-                          Fullfilment status
-                        </th>
-                        <th class="text-left">
-                          payment status
-                        </th>
-                        <th class="text-left">
-                          bill
-                        </th>
+                        <th class="text-left">Order id</th>
+                        <th class="text-left">customer</th>
+                        <th class="text-left">Fullfilment status</th>
+                        <th class="text-left">payment status</th>
+                        <th class="text-left">bill</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -100,50 +94,17 @@
 
         <v-col cols="12" md="4">
           <v-card outlined>
-            <v-card-title>
-              Featured Recipes
-            </v-card-title>
-            
+            <v-card-title> Featured Recipes </v-card-title>
 
             <v-list dense>
-              <v-list-item link>
-                <v-list-item-avatar>
-                  <v-img
-                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                  />
-                </v-list-item-avatar>
+              <v-list-item
+                link
+                v-for="rec in featured"
+                :key="rec.id"
+                @click="navigate(rec.id)"
+              >
                 <v-list-item-content>
-                  <v-list-item-title>{{featured}}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item link>
-                <v-list-item-avatar>
-                  <v-img
-                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                  />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>Tomatoes</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item link>
-                <v-list-item-avatar>
-                  <v-img
-                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                  />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>Tomatoes</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item link>
-                <v-list-item-avatar>
-                  <v-img
-                    src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/processed-food700-350-e6d0f0f.jpg"
-                  />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>Tomatoes</v-list-item-title>
+                  <v-list-item-title>{{ rec.name }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -155,49 +116,54 @@
 </template>
 
 <script>
-import simpleCard from '@/components/cards/simple-card.vue'
-import detailCard from '@/components/cards/detail-card.vue'
+import simpleCard from "@/components/cards/simple-card.vue";
+import detailCard from "@/components/cards/detail-card.vue";
 
 export default {
-  name: 'Home-dashboard',
+  name: "Home-dashboard",
   components: {
     simpleCard,
     detailCard,
   },
   computed: {
     dashInfo() {
-      return this.$store.state.app.dashboardSummary
+      return this.$store.state.app.dashboardSummary;
     },
     featured() {
-        return this.$store.state.recipe.featured
-    }
+      return this.$store.state.recipe.featured;
+    },
+  },
+  methods: {
+    navigate(id) {
+      this.$router.push({ name: "recipe", params: { recipe_id: id } });
+    },
   },
   data() {
     return {
       orders: [
         {
-          id: 'dsfgdsrfg',
+          id: "dsfgdsrfg",
           bill_amount: 159000,
-          payment_status: 'paid',
-          customer_name: 'Rutengeri',
-          fillment: 'done',
+          payment_status: "paid",
+          customer_name: "Rutengeri",
+          fillment: "done",
         },
         {
-          id: 'dsfgd3sfg',
+          id: "dsfgd3sfg",
           bill_amount: 159000,
-          payment_status: 'paid',
-          customer_name: 'Rutengeri',
-          fillment: 'done',
+          payment_status: "paid",
+          customer_name: "Rutengeri",
+          fillment: "done",
         },
         {
-          id: 'dsfgds32fg',
+          id: "dsfgds32fg",
           bill_amount: 159000,
-          payment_status: 'paid',
-          customer_name: 'Rutengeri',
-          fillment: 'done',
+          payment_status: "paid",
+          customer_name: "Rutengeri",
+          fillment: "done",
         },
       ],
-    }
+    };
   },
-}
+};
 </script>

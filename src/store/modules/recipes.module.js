@@ -65,7 +65,7 @@ export const recipe = {
     },
     async getFeatured({ commit }) {
       await recipeService
-        .featured()
+        .featured("recipes")
         .then((res) => {
           if (res.status === 200) {
             commit('SET_FEATURED', res.data)

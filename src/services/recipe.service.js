@@ -33,7 +33,7 @@ class RecipeService {
     return response
   }
   async featured(url) {
-    const response = await axios.get(`${API_URL}api/v1/featured/${url}`, {
+    const response = await axios.get(`${API_URL}api/v1/featured?type=${url}`, {
       headers: authHeader(),
     })
     return response
