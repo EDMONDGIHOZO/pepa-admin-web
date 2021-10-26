@@ -13,6 +13,8 @@ import RecipeView from '../views/dashboard/single-recipe.vue'
 import RecipeCategoryView from '../views/dashboard/single-recipe-category.vue'
 import Featureds from '../views/dashboard/featureds.vue'
 import Orders from '../views/dashboard/orders.vue'
+import Users from '../views/dashboard/users.vue'
+import Locations from '../views/dashboard/locations.vue'
 import NotFound from '../views/404/not-found'
 
 Vue.use(VueRouter)
@@ -108,6 +110,22 @@ const routes = [
         component: Orders,
         meta: {
           title: 'Orders',
+        },
+      },
+      {
+        path: 'users',
+        name: 'users',
+        component: Users,
+        meta: {
+          title: 'system users',
+        },
+      },
+      {
+        path: 'locations',
+        name: 'locations',
+        component: Locations,
+        meta: {
+          title: 'operable locations',
         },
       },
       {

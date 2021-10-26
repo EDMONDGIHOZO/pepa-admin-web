@@ -1,0 +1,21 @@
+{
+  "provinces": [
+    {
+      "name": "kigali",
+      "districts": [
+        {
+          "name": "Gasabo"
+        },
+        {
+          "name": "Kicukiro"
+        },
+        {
+          "name": "Remera"
+        },
+        {
+          "name": "Nyarugenge"
+        }
+      ]
+    }
+  ]
+}

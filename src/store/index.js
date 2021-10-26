@@ -7,6 +7,7 @@ import { ingredient } from './modules/ingredient.module'
 import { recipeCategory } from './modules/recipe-category.module'
 import { recipe } from './modules/recipes.module'
 import { Featureds } from './modules/featureds.module'
+import { settings } from './modules/settings.module'
 
 Vue.use(Vuex)
 
@@ -19,5 +20,6 @@ export default new Vuex.Store({
     recipeCategory,
     recipe,
     Featureds,
+    settings
   },
 })

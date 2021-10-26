@@ -218,7 +218,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import upload from '../../mixins/image-upload'
 import selectFile from '../../mixins/image-upload'
-import AddIngToRecipe from './add-ing-to-recipe.vue'
+import AddIngToRecipe from '../actions/add-ing-to-recipe.vue'
 export default {
   name: 'RecipeForm',
   mixins: [upload, selectFile],

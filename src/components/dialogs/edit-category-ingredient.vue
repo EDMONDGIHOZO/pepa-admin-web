@@ -32,7 +32,7 @@
 
 <script>
 import ingredientCategoryService from '../../services/ingredient-category.service'
-import CategoryForm from '../actions/category-form.vue'
+import CategoryForm from '../forms/category-form.vue'
 export default {
   name: 'editIngredientCategory',
   props: {

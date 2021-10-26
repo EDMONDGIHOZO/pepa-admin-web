@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import CategoryForm from '../../components/actions/category-form.vue'
+import CategoryForm from '../../components/forms/category-form.vue'
 import deleteDialog from '../../components/dialogs/delete-dialog.vue'
 import recipeCategoryService from '../../services/recipe-category.service'
 export default {

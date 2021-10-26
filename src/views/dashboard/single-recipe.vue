@@ -99,7 +99,7 @@
 
 <script>
 import addFeaturedItem from '../../mixins/add-featured'
-import RecipeForm from '../../components/actions/recipe-form.vue'
+import RecipeForm from '../../components/forms/recipe-form.vue'
 export default {
   props: ['recipe_id'],
   mixins: [addFeaturedItem],

@@ -36,8 +36,14 @@ export const app = {
         title: 'users',
         icon: 'mdi-account-group',
         subs: [
-          { title: 'staff', icon: 'mdi-account', path: 'staff' },
-          { title: 'all users', icon: 'mdi-account-group' },
+          { title: 'all users', icon: 'mdi-account-group', path: 'users' },
+        ],
+      },
+      {
+        title: 'Settings',
+        icon: 'mdi-account-group',
+        subs: [
+          { title: 'locations', icon: 'mdi-pin', path: "locations" },
         ],
       },
     ],

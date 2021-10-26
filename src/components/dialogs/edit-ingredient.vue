@@ -39,7 +39,7 @@
 
 <script>
 import ingredientService from '../../services/ingredient.service'
-import IngredientForm from '../actions/ingredient-form.vue'
+import IngredientForm from '../forms/ingredient-form.vue'
 export default {
   name: 'editIngredient',
   components: {
